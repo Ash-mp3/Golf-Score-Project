@@ -29,9 +29,10 @@ async function getCoursesDetails(coursesId) {
 // Example usage
 async function fetchData() {
     try {
+        // getting all courses with the api
         const courses = await getCourses();
         console.log(courses);
-        
+        // getting thanksgiving points course data running the get courses details funciton.
         const courseDetails = await getCoursesDetails(11819);
         console.log(courseDetails);
     } catch (error) {
