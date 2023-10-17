@@ -40,17 +40,12 @@ courses.forEach((course) => {
 courseOptionHTML += `<option value="${course.id}">${course.name}</option>`;
 });
 document.getElementById('selectedCourse').innerHTML = courseOptionHTML;
-        
-        
-        
-        
-        // const courseDetails = await getCoursesDetails(11819);
-        // console.log(courseDetails);
+    
     } catch (error) {
         // Handle any errors here 
-        console.log(`fetchingCourses data did not happenin resulting in error: ${error}`)
+        console.error('fetchingCourses data did not happenin resulting in error:', error)
     }
-    fetchCurrentGolfCourse();
+    fetchCurrentGolfCourseURL();
 }
 
 fetchData();
@@ -58,6 +53,27 @@ fetchData();
 // steps needed for user options
 //make a golf corse select box. this will allow  you to select what course you want to use.
 // It will also go through the api, make a current list, and select that list and data.
+async function fetchCurrentGolfCourse (url) {
+try {
+   const response = await fetch(url);
+   if(!response) {
+       throw new Error('network response was not ok')
+   }
+   const currentGolfCourse = await response.json();
+   console.log(currentGolfCourse)
+   let teeBoxSelectHtml = '';
+   let totalYards = 0;
+         currentGolfCourse.holes.forEach((hole) => {hole.teeBoxes.forEach(function(teeBox, index) {
+            totalYards += teeBox.yards
+            teeBoxSelectHtml += `<option value="${index}">${teeBox.teeType.toUpperCase()},
+            ${teeBox.totalYards} yards</option>`
+         })});
+         document.getElementById('selectedTeeBox').innerHTML = teeBoxSelectHtml;
+   
+} catch(error) {
+console.error('Error:', error)
+}
+}
  function fetchCurrentGolfCourseURL () {
      //currentGolfCourseId is the slectedCourses id value wich is only 5 digits. input htis into the url to get complete access to the golf courses data.
     let currentGolfCourseId = selectedCourse.value
@@ -65,16 +81,13 @@ fetchData();
     let currentGolfCourseURL = `https://exquisite-pastelito-9d4dd1.netlify.app/golfapi/course${currentGolfCourseId}.json`
     console.log(currentGolfCourseId)
     console.log(currentGolfCourseURL)
-    print();
-    return currentGolfCourseURL;
-};
-
- async function fetchCurrentGolfCourse () {
-
- }
-
-function print () {
     
+    if(currentGolfCourseURL){
+    fetchCurrentGolfCourse(currentGolfCourseURL);
+    print();} 
+};
+function print () {
+   // print logic heref 
 }
 
 
