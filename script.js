@@ -26,6 +26,7 @@ async function getCoursesDetails(coursesId) {
     }
 }
 
+
 // Example usage
 async function fetchData() {
     try {
@@ -33,30 +34,58 @@ async function fetchData() {
         const courses = await getCourses();
         console.log(courses);
         // getting thanksgiving points course data running the get courses details funciton.
-        const courseDetails = await getCoursesDetails(11819);
-        console.log(courseDetails);
+        
+        let courseOptionHTML = '';
+courses.forEach((course) => {
+courseOptionHTML += `<option value="${course.id}">${course.name}</option>`;
+});
+document.getElementById('selectedCourse').innerHTML = courseOptionHTML;
+        
+        
+        
+        
+        // const courseDetails = await getCoursesDetails(11819);
+        // console.log(courseDetails);
     } catch (error) {
-        // Handle any errors here
+        // Handle any errors here 
+        console.log(`fetchingCourses data did not happenin resulting in error: ${error}`)
     }
+    fetchCurrentGolfCourse();
 }
 
 fetchData();
 
-// other way;
-// async function getAvailableCourses() {
-//     const url = 'https://exquisite-pastelito-9d4dd1.netlify.app/golfapi/courses.json';
-//          const response = await fetch(url);
-//         const data = await response.json();
-        
-//         return data;
-// }    
-// console.log(getCoursesDetails(11819))
-// let courseOptions = '';
-// courses.forEach((course) => {
-//     courseOptions += `option value${}`
-// })
-// let golfCourses = getCourses();
+// steps needed for user options
+//make a golf corse select box. this will allow  you to select what course you want to use.
+// It will also go through the api, make a current list, and select that list and data.
+ function fetchCurrentGolfCourseURL () {
+     //currentGolfCourseId is the slectedCourses id value wich is only 5 digits. input htis into the url to get complete access to the golf courses data.
+    let currentGolfCourseId = selectedCourse.value
+    //currentGolfCourseURL is the current url selected.
+    let currentGolfCourseURL = `https://exquisite-pastelito-9d4dd1.netlify.app/golfapi/course${currentGolfCourseId}.json`
+    console.log(currentGolfCourseId)
+    console.log(currentGolfCourseURL)
+    print();
+    return currentGolfCourseURL;
+};
 
-// for (let courses of courses) {
-//     console.log(`Golf course name: ${golfCourse.name}`)
-// }
+ async function fetchCurrentGolfCourse () {
+
+ }
+
+function print () {
+    
+}
+
+
+//make a tee box select. after a user has selected a course make a display that allows the user to select what tee box they are playing on.
+// this will send the id of the course sleected. then it will also send what tee box you want to access.
+//use the fetch word to do this.
+
+// make a bootsraps responsive table with different labels. hole yardage par handicap. also have rows for players.
+
+// create objects with classes for each player. this will allow you to keep each individual score
+
+// make a print function that will add up the scores and display the sum. there are 18 holes so an index of 0-17.
+
+// use toasts to display when the user has finished a game.
