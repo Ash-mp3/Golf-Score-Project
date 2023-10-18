@@ -26,34 +26,23 @@ async function getCoursesDetails(coursesId) {
   }
 }
 
-
-async function fetchData() {
-  try {
-    // getting all courses with the api
-    const courses = await getCourses();
-    console.log(courses);
-    // getting thanksgiving points course data running the get courses details funciton.
-
-    let courseOptionHTML = "";
-    courses.forEach((course) => {
-      courseOptionHTML += `<option value="${course.id}">${course.name}</option>`;
-    });
-    document.getElementById("selectedCourse").innerHTML = courseOptionHTML;
-  } catch (error) {
-    // Handle any errors here
-    console.error(
-      "fetchingCourses data did not happenin resulting in error:",
-      error
-    );
-  }
-  fetchCurrentGolfCourseURL();
-}
-
-fetchData();
-
 // steps needed for user options
 //make a golf corse select box. this will allow  you to select what course you want to use.
 // It will also go through the api, make a current list, and select that list and data.
+
+function fetchCurrentGolfCourseURL() {
+  //currentGolfCourseId is the slectedCourses id value wich is only 5 digits. input htis into the url to get complete access to the golf courses data.
+  let currentGolfCourseId = selectedCourse.value;
+  let currentGolfCourseURL = `https://exquisite-pastelito-9d4dd1.netlify.app/golfapi/course${currentGolfCourseId}.json`;
+  console.log(currentGolfCourseId);
+  console.log(currentGolfCourseURL);
+
+  if (currentGolfCourseURL) {
+    fetchCurrentGolfCourse(currentGolfCourseURL);
+    print();
+  }
+}
+
 async function fetchCurrentGolfCourse(url) {
   try {
     const response = await fetch(url);
@@ -84,28 +73,42 @@ async function fetchCurrentGolfCourse(url) {
     console.error("Error:", error);
   }
 }
-function fetchCurrentGolfCourseURL() {
-  //currentGolfCourseId is the slectedCourses id value wich is only 5 digits. input htis into the url to get complete access to the golf courses data.
-  let currentGolfCourseId = selectedCourse.value;
-  let currentGolfCourseURL = `https://exquisite-pastelito-9d4dd1.netlify.app/golfapi/course${currentGolfCourseId}.json`;
-  console.log(currentGolfCourseId);
-  console.log(currentGolfCourseURL);
 
-  if (currentGolfCourseURL) {
-    fetchCurrentGolfCourse(currentGolfCourseURL);
-    print();
+async function fetchData() {
+  try {
+    // getting all courses with the api
+    const courses = await getCourses();
+    console.log(courses);
+    // getting thanksgiving points course data running the get courses details funciton.
+
+    let courseOptionHTML = "";
+    courses.forEach((course) => {
+      courseOptionHTML += `<option value="${course.id}">${course.name}</option>`;
+    });
+    document.getElementById("selectedCourse").innerHTML = courseOptionHTML;
+  } catch (error) {
+    // Handle any errors here
+    console.error(
+      "fetchingCourses data did not happenin resulting in error:",
+      error
+    );
   }
+  fetchCurrentGolfCourseURL();
 }
-
-/// print
 
 function print() {
   // print logic heref
 
 }
+function printTable() {}
 
-
+// run funciton on change or window load. put this into a window load function if we do local storage
+fetchData();
+document
+  .getElementById("selectedTeeBox")
+  .addEventListener("click", fetchCurrentGolfCourseURL());
 // make a bootsraps responsive table with different labels. hole yardage par handicap. also have rows for players.
+// input current feild, with data sets in the print function
 
 // create objects with classes for each player. this will allow you to keep each individual score
 
