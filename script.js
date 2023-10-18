@@ -100,10 +100,6 @@ function print() {
   // print logic heref
 }
 
-//make a tee box select. after a user has selected a course make a display that allows the user to select what tee box they are playing on.
-//currentGolfCourseURL is the current url selected.
-// this will send the id of the course sleected. then it will also send what tee box you want to access.
-//use the fetch word to do this.
 
 // make a bootsraps responsive table with different labels. hole yardage par handicap. also have rows for players.
 
