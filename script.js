@@ -63,21 +63,20 @@ try {
    console.log(currentGolfCourse)
    let teeBoxSelectHtml = '';
    let totalYards = 0;
-         currentGolfCourse.holes.forEach((hole) => {hole.teeBoxes.forEach(function(teeBox, index) {
-            totalYards += teeBox.yards
-            teeBoxSelectHtml += `<option value="${index}">${teeBox.teeType.toUpperCase()},
-            ${teeBox.totalYards} yards</option>`
-         })});
+         currentGolfCourse.holes.forEach((hole) => {hole.teeBoxes.forEach(function(teeBox) {
+            totalYards += teeBox.yards;
+            teeBoxSelectHtml += `<option value="${teeBox.teeType}">${teeBox.teeType.toUpperCase()}, ${teeBox.yards} yards</option>`;
+         });
+        });
          document.getElementById('selectedTeeBox').innerHTML = teeBoxSelectHtml;
    
 } catch(error) {
 console.error('Error:', error)
 }
 }
- function fetchCurrentGolfCourseURL () {
-     //currentGolfCourseId is the slectedCourses id value wich is only 5 digits. input htis into the url to get complete access to the golf courses data.
+function fetchCurrentGolfCourseURL () {
+    //currentGolfCourseId is the slectedCourses id value wich is only 5 digits. input htis into the url to get complete access to the golf courses data.
     let currentGolfCourseId = selectedCourse.value
-    //currentGolfCourseURL is the current url selected.
     let currentGolfCourseURL = `https://exquisite-pastelito-9d4dd1.netlify.app/golfapi/course${currentGolfCourseId}.json`
     console.log(currentGolfCourseId)
     console.log(currentGolfCourseURL)
@@ -92,6 +91,7 @@ function print () {
 
 
 //make a tee box select. after a user has selected a course make a display that allows the user to select what tee box they are playing on.
+    //currentGolfCourseURL is the current url selected.
 // this will send the id of the course sleected. then it will also send what tee box you want to access.
 //use the fetch word to do this.
 
