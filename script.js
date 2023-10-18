@@ -26,7 +26,7 @@ async function getCoursesDetails(coursesId) {
   }
 }
 
-// Example usage
+
 async function fetchData() {
   try {
     // getting all courses with the api
@@ -96,8 +96,12 @@ function fetchCurrentGolfCourseURL() {
     print();
   }
 }
+
+/// print
+
 function print() {
   // print logic heref
+
 }
 
 
