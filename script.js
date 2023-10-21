@@ -98,6 +98,7 @@ async function fetchData() {
 
 function print() {
   // print logic heref
+
 }
 function printTable() {}
 
