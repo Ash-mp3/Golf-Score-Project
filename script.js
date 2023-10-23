@@ -39,7 +39,6 @@ function fetchCurrentGolfCourseURL() {
 
   if (currentGolfCourseURL) {
     fetchCurrentGolfCourse(currentGolfCourseURL);
-    print();
   }
 }
 
@@ -66,12 +65,17 @@ async function fetchCurrentGolfCourse(url) {
       if (totalYards.hasOwnProperty(property)) {
         const yards = totalYards[property];
         teeBoxSelectHtml += `<option value="${property}">${property.toUpperCase()}, ${yards} yards</option>`;
+      
       }
     }
     document.getElementById("selectedTeeBox").innerHTML = teeBoxSelectHtml;
+
+    print(currentGolfCourse, currentTeeType);
   } catch (error) {
     console.error("Error:", error);
   }
+
+  
 }
 
 async function fetchData() {
@@ -96,7 +100,7 @@ async function fetchData() {
   fetchCurrentGolfCourseURL();
 }
 
-function print(currentGolfCourse) {
+function print(currentGolfCourse, currentTeeTypecurrentGolfCourse) {
   // print logic heref
   let currHoles = currentGolfCourse.holes;
   console.log(currHoles)
