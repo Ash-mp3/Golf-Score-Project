@@ -96,8 +96,30 @@ async function fetchData() {
   fetchCurrentGolfCourseURL();
 }
 
-function print() {
+function print(currentGolfCourse) {
   // print logic heref
+  let currHoles = currentGolfCourse.holes;
+  console.log(currHoles)
+
+  let golfChart = 
+    '<table class="table table-bordered">'+
+      '<tr class="col-10">'+
+        '<th class="">hole</th>'+
+        '<th class="">1</th>'+
+        '<th class="">2</th>'+
+        '<th class="">3</th>'+
+        '<th class="">4</th>'+
+        '<th class="">5</th>'+
+        '<th class="">6</th>'+
+        '<th class="">7</th>'+
+        '<th class="">8</th>'+
+        '<th class="">9</th>'+
+        '<th class="">out</th>'+
+      '</tr>';
+  
+  golfChart += '</table>';
+
+  document.getElementById('tableCon').innerHTML = golfChart
 
 }
 function printTable() {}
