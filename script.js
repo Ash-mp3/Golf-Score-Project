@@ -1,3 +1,6 @@
+let currCourse;
+
+
 async function getCourses() {
   try {
     const response = await fetch(
@@ -69,10 +72,10 @@ async function fetchCurrentGolfCourse(url) {
       }
     }
     document.getElementById("selectedTeeBox").innerHTML = teeBoxSelectHtml;
-
-    print(currentGolfCourse, currentTeeType);
+    currCourse = currentGolfCourse
+    print(currentGolfCourse);
   } catch (error) {
-    console.error("Error:", error);
+    // console.error("Error:", error);
   }
 
   
@@ -100,10 +103,15 @@ async function fetchData() {
   fetchCurrentGolfCourseURL();
 }
 
-function print(currentGolfCourse, currentTeeTypecurrentGolfCourse) {
+function print(currentGolfCourse) {
   // print logic heref
   let currHoles = currentGolfCourse.holes;
+  let curryards = []
+  currHoles.forEach(elem => {
+    
+  })
   console.log(currHoles)
+  
 
   let golfChart = 
     '<table class="table table-bordered">'+
@@ -123,7 +131,7 @@ function print(currentGolfCourse, currentTeeTypecurrentGolfCourse) {
   
   golfChart += '</table>';
 
-  document.getElementById('tableCon').innerHTML = golfChart
+  document.getElementById('tableCon').innerHTML = golfChart;
 
 }
 function printTable() {}
