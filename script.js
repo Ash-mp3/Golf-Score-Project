@@ -99,22 +99,35 @@ async function fetchData() {
 function print(currentGolfCourse, currentTeeType) {
   // print logic heref
   let currHoles = currentGolfCourse.holes;
+  let currYards = []
+  console.log(currentTeeType)
+  currHoles.forEach(elem => {
+    let currBox = elem.teeBoxes
+    let box = currBox.find((Object) => Object.teeType === currentTeeType)
+    currYards.push(box.yards);
+  })
+  console.log(currYards)
   let golfChart = 
     '<table class="table table-bordered">'+
       '<tr class="col-10">'+
-        '<th class="">hole</th>'+
-        '<th class="">1</th>'+
-        '<th class="">2</th>'+
-        '<th class="">3</th>'+
-        '<th class="">4</th>'+
-        '<th class="">5</th>'+
-        '<th class="">6</th>'+
-        '<th class="">7</th>'+
-        '<th class="">8</th>'+
-        '<th class="">9</th>'+
-        '<th class="">out</th>'+
-      '</tr>';
+        '<th>hole</th>'+
+        '<th>1</th>'+
+        '<th>2</th>'+
+        '<th>3</th>'+
+        '<th>4</th>'+
+        '<th>5</th>'+
+        '<th>6</th>'+
+        '<th>7</th>'+
+        '<th>8</th>'+
+        '<th>9</th>'+
+        '<th>out</th>'+
+      '</tr>'+
+    '<tr class="col-10">';
   
+  currYards.forEach(yard => {
+    golfChart += `<th class="">${yard}</th>`;
+  })
+  golfChart += '</tr>';
   golfChart += '</table>';
 
   document.getElementById('tableCon').innerHTML = golfChart
