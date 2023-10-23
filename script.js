@@ -1,10 +1,7 @@
 
 //setting current TeeType default
 let currentTeeType;
-
-let currCourse;
-
-
+let currentGolfCourse;
 async function getCourses() {
   try {
     const response = await fetch(
@@ -52,8 +49,7 @@ async function fetchCurrentGolfCourse(url) {
     if (!response) {
       throw new Error("network response was not ok");
     }
-    const currentGolfCourse = await response.json();
-    console.log(currentGolfCourse);
+    currentGolfCourse = await response.json();
     let teeBoxSelectHtml = "";
     let totalYards = {};
     currentGolfCourse.holes.forEach((hole) => {
@@ -100,11 +96,9 @@ async function fetchData() {
   fetchCurrentGolfCourseURL();
 }
 
-function print(currentGolfCourse, currentTeeTypecurrentGolfCourse) {
+function print(currentGolfCourse, currentTeeType) {
   // print logic heref
   let currHoles = currentGolfCourse.holes;
-  console.log(currHoles)
-
   let golfChart = 
     '<table class="table table-bordered">'+
       '<tr class="col-10">'+
