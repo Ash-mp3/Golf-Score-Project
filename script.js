@@ -1,3 +1,7 @@
+
+//setting current TeeType default
+let currentTeeType;
+
 async function getCourses() {
   try {
     const response = await fetch(
@@ -34,9 +38,6 @@ function fetchCurrentGolfCourseURL() {
   //currentGolfCourseId is the slectedCourses id value wich is only 5 digits. input htis into the url to get complete access to the golf courses data.
   let currentGolfCourseId = selectedCourse.value;
   let currentGolfCourseURL = `https://exquisite-pastelito-9d4dd1.netlify.app/golfapi/course${currentGolfCourseId}.json`;
-  console.log(currentGolfCourseId);
-  console.log(currentGolfCourseURL);
-
   if (currentGolfCourseURL) {
     fetchCurrentGolfCourse(currentGolfCourseURL);
   }
@@ -49,7 +50,6 @@ async function fetchCurrentGolfCourse(url) {
       throw new Error("network response was not ok");
     }
     const currentGolfCourse = await response.json();
-    console.log(currentGolfCourse);
     let teeBoxSelectHtml = "";
     let totalYards = {};
     currentGolfCourse.holes.forEach((hole) => {
@@ -69,20 +69,23 @@ async function fetchCurrentGolfCourse(url) {
       }
     }
     document.getElementById("selectedTeeBox").innerHTML = teeBoxSelectHtml;
+    document.getElementById("selectedTeeBox").addEventListener('change', () => {
+      selectedHtmlTeeBox = document.getElementById('selectedTeeBox')
+        currentTeeType = selectedHtmlTeeBox.value;
+    });
 
-    print(currentGolfCourse, currentTeeType);
+
+    print(currentGolfCourse, currentTeeType)
   } catch (error) {
     console.error("Error:", error);
   }
 
   
 }
-
 async function fetchData() {
   try {
     // getting all courses with the api
     const courses = await getCourses();
-    console.log(courses);
     // getting thanksgiving points course data running the get courses details funciton.
 
     let courseOptionHTML = "";
@@ -100,11 +103,9 @@ async function fetchData() {
   fetchCurrentGolfCourseURL();
 }
 
-function print(currentGolfCourse, currentTeeTypecurrentGolfCourse) {
+function print(currentGolfCourse, currentTeeType) {
   // print logic heref
   let currHoles = currentGolfCourse.holes;
-  console.log(currHoles)
-
   let golfChart = 
     '<table class="table table-bordered">'+
       '<tr class="col-10">'+
@@ -124,8 +125,9 @@ function print(currentGolfCourse, currentTeeTypecurrentGolfCourse) {
   golfChart += '</table>';
 
   document.getElementById('tableCon').innerHTML = golfChart
-
+console.log(currentTeeType, currentGolfCourse)
 }
+console.log(currentTeeType)
 function printTable() {}
 
 // run funciton on change or window load. put this into a window load function if we do local storage
