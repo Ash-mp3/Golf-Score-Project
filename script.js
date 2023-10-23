@@ -101,10 +101,11 @@ async function fetchData() {
   fetchCurrentGolfCourseURL();
 }
 
-function print(currentGolfCourse, currentTeeTypecurrentGolfCourse) {
+function print(currentGolfCourse, currentTee) {
   // print logic heref
   let currHoles = currentGolfCourse.holes;
   console.log(currHoles)
+  console.log(currentTee)
 
   let golfChart = 
     '<table class="table table-bordered">'+
