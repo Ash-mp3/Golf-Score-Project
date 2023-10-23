@@ -1,7 +1,7 @@
 
 //setting current TeeType default
 let currentTeeType;
-
+let currentGolfCourse;
 async function getCourses() {
   try {
     const response = await fetch(
@@ -49,7 +49,7 @@ async function fetchCurrentGolfCourse(url) {
     if (!response) {
       throw new Error("network response was not ok");
     }
-    const currentGolfCourse = await response.json();
+    currentGolfCourse = await response.json();
     let teeBoxSelectHtml = "";
     let totalYards = {};
     currentGolfCourse.holes.forEach((hole) => {
@@ -69,13 +69,6 @@ async function fetchCurrentGolfCourse(url) {
       }
     }
     document.getElementById("selectedTeeBox").innerHTML = teeBoxSelectHtml;
-    document.getElementById("selectedTeeBox").addEventListener('change', () => {
-      selectedHtmlTeeBox = document.getElementById('selectedTeeBox')
-        currentTeeType = selectedHtmlTeeBox.value;
-    });
-
-
-    print(currentGolfCourse, currentTeeType)
   } catch (error) {
     console.error("Error:", error);
   }
@@ -134,6 +127,11 @@ function printTable() {}
 fetchData();
 document.getElementById("selectedCourse").addEventListener('change', () => {
     fetchCurrentGolfCourseURL();
+});
+document.getElementById("selectedTeeBox").addEventListener('change', () => {
+  selectedHtmlTeeBox = document.getElementById('selectedTeeBox')
+    currentTeeType = selectedHtmlTeeBox.value;
+    print(currentGolfCourse, currentTeeType);
 });
 
 // make a bootsraps responsive table with different labels. hole yardage par handicap. also have rows for players.
