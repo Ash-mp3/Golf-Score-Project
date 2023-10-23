@@ -53,6 +53,7 @@ async function fetchCurrentGolfCourse(url) {
       throw new Error("network response was not ok");
     }
     const currentGolfCourse = await response.json();
+    console.log(currentGolfCourse);
     let teeBoxSelectHtml = "";
     let totalYards = {};
     currentGolfCourse.holes.forEach((hole) => {
@@ -72,8 +73,6 @@ async function fetchCurrentGolfCourse(url) {
       }
     }
     document.getElementById("selectedTeeBox").innerHTML = teeBoxSelectHtml;
-
-    print(currentGolfCourse, currentTeeType);
   } catch (error) {
     // console.error("Error:", error);
   }
@@ -101,11 +100,10 @@ async function fetchData() {
   fetchCurrentGolfCourseURL();
 }
 
-function print(currentGolfCourse, currentTee) {
+function print(currentGolfCourse, currentTeeTypecurrentGolfCourse) {
   // print logic heref
   let currHoles = currentGolfCourse.holes;
   console.log(currHoles)
-  console.log(currentTee)
 
   let golfChart = 
     '<table class="table table-bordered">'+
@@ -126,7 +124,7 @@ function print(currentGolfCourse, currentTee) {
   golfChart += '</table>';
 
   document.getElementById('tableCon').innerHTML = golfChart
-
+console.log(currentTeeType, currentGolfCourse)
 }
 console.log(currentTeeType)
 function printTable() {}
@@ -135,6 +133,11 @@ function printTable() {}
 fetchData();
 document.getElementById("selectedCourse").addEventListener('change', () => {
     fetchCurrentGolfCourseURL();
+});
+document.getElementById("selectedTeeBox").addEventListener('change', () => {
+  selectedHtmlTeeBox = document.getElementById('selectedTeeBox')
+    currentTeeType = selectedHtmlTeeBox.value;
+    print(currentGolfCourse, currentTeeType);
 });
 
 // make a bootsraps responsive table with different labels. hole yardage par handicap. also have rows for players.
