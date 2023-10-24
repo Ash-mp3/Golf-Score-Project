@@ -50,6 +50,7 @@ function fetchCurrentGolfCourseURL() {
   if (currentGolfCourseURL) {
     fetchCurrentGolfCourse(currentGolfCourseURL);
   }
+  return currentGolfCourseURL;
 }
 
 async function fetchCurrentGolfCourse(url) {
@@ -74,15 +75,14 @@ async function fetchCurrentGolfCourse(url) {
       if (totalYards.hasOwnProperty(property)) {
         const yards = totalYards[property];
         teeBoxSelectHtml += `<option value="${property}">${property.toUpperCase()}, ${yards} yards</option>`;
-      
       }
     }
     document.getElementById("selectedTeeBox").innerHTML = teeBoxSelectHtml;
+    return currentGolfCourse;
   } catch (error) {
-    // console.error("Error:", error);
+     console.error("Error:", error);
+     throw error;
   }
-
-  
 }
 async function fetchData() {
   try {
@@ -108,13 +108,11 @@ async function fetchData() {
 function print(currentGolfCourse, currentTeeType) {
   let currHoles = currentGolfCourse.holes;
   let currYards = []
-  console.log(currentTeeType)
   currHoles.forEach(elem => {
     let currBox = elem.teeBoxes
     let box = currBox.find((Object) => Object.teeType === currentTeeType)
     currYards.push(box.yards);
   })
-  console.log(currYards)
   let golfChart = 
     '<table class="table table-bordered">'+
       '<tr class="col-10">'+
@@ -141,18 +139,21 @@ function print(currentGolfCourse, currentTeeType) {
   document.getElementById('tableCon').innerHTML = golfChart
 console.log(currentTeeType, currentGolfCourse)
 }
-window.onload = function () {
-  print(currentGolfCourse, currentTeeType);
-};
+
 function printTable() {}
 
 // run funciton on change or window load. put this into a window load function if we do local storage
 fetchData();
-document.getElementById("selectedCourse").addEventListener('change', () => {
-    fetchCurrentGolfCourseURL();
-    
-    defaultTeeType();
-    print(currentGolfCourse, currentTeeType);
+document.getElementById("selectedCourse").addEventListener('change', async () => {
+   try {
+    let url = fetchCurrentGolfCourseURL()
+   await fetchCurrentGolfCourse(url);
+      console.log('fetched golf course has finished')
+      defaultTeeType();
+      print(currentGolfCourse, currentTeeType);
+    }catch{
+      console.error('Error:', error)
+     } 
 });
 document.getElementById("selectedTeeBox").addEventListener('change', () => {
   selectedHtmlTeeBox = document.getElementById('selectedTeeBox')
