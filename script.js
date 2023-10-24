@@ -16,20 +16,6 @@ async function getCourses() {
   }
 }
 
-// async function getCoursesDetails(coursesId) {
-//   try {
-//     const response = await fetch(
-//       `https://exquisite-pastelito-9d4dd1.netlify.app/golfapi/course${coursesId}.json`,
-//       { mode: "cors" }
-//     );
-//     const data = await response.json();
-//     return data;
-//   } catch (error) {
-//     console.error("Error fetching course details:", error);
-//     throw error;
-//   }
-// }
-
 // steps needed for user options
 //make a golf corse select box. this will allow  you to select what course you want to use.
 // It will also go through the api, make a current list, and select that list and data.
@@ -97,43 +83,64 @@ async function fetchData() {
 }
 
 function print(currentGolfCourse, currentTeeType) {
-  // print logic heref
+
   let currHoles = currentGolfCourse.holes;
   let currYards = []
-  console.log(currentTeeType)
+  let totalYards = 0;
+  let currPar = []
+  let totalPar = 0;
+  let currHcp = [];
+  
+  /// getting the right tbox
+
   currHoles.forEach(elem => {
     let currBox = elem.teeBoxes
     let box = currBox.find((Object) => Object.teeType === currentTeeType)
     currYards.push(box.yards);
+    currPar.push(box.par)
+    currHcp.push(box.hcp)
   })
-  console.log(currYards)
-  let golfChart = 
-    '<table class="table table-bordered">'+
-      '<tr class="col-10">'+
-        '<th>hole</th>'+
-        '<th>1</th>'+
-        '<th>2</th>'+
-        '<th>3</th>'+
-        '<th>4</th>'+
-        '<th>5</th>'+
-        '<th>6</th>'+
-        '<th>7</th>'+
-        '<th>8</th>'+
-        '<th>9</th>'+
-        '<th>out</th>'+
-      '</tr>'+
-    '<tr class="col-10">';
   
-  currYards.forEach(yard => {
-    golfChart += `<th class="">${yard}</th>`;
-  })
-  golfChart += '</tr>';
-  golfChart += '</table>';
+  /// printing holes
 
-  document.getElementById('tableCon').innerHTML = golfChart
-console.log(currentTeeType, currentGolfCourse)
+  let golfChart = '<tr class="col-10"><td>Hole</td>';
+  for(let i = 1; i < 19; i++) {
+    golfChart += `<td>${i}</td>`
+  }
+  golfChart += '<td>out</td> </tr>';
+
+  /// printing yards
+
+  golfChart += '<tr class="col-10"><td>Yard</td>';
+  currYards.forEach(yard => {
+    golfChart += `<td>${yard}</td>`;
+    totalYards += yard;
+  })
+  golfChart += `<td>${totalYards}</td></tr>`;
+
+  /// print par
+
+  golfChart += '<tr class="col-10"><td>Par</td>';
+  currPar.forEach(par => {
+    golfChart += `<td>${par}</td>`;
+    totalPar += par;
+  })
+  golfChart += `<td>${totalPar}</td></tr>`;
+
+  /// print hcp 
+
+  golfChart += '<tr class="col-10"><td>HCP</td>';
+  currHcp.forEach(hcp => {
+    golfChart += `<td>${hcp}</td>`
+  })
+  golfChart += `<td> </td></tr>`;
+
+  /// adding it all to the dom
+
+  document.getElementById('mainTable').innerHTML = golfChart
+  console.log('currentTeeType', currentTeeType, 'currentGolfCourse', currentGolfCourse.city)
 }
-console.log(currentTeeType)
+
 function printTable() {}
 
 // run funciton on change or window load. put this into a window load function if we do local storage
