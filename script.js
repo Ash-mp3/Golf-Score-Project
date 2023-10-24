@@ -2,6 +2,7 @@
 //setting current TeeType default
 let currentTeeType;
 let currentGolfCourse;
+let listOfPlayers = [];
 if(currentGolfCourse === undefined){
   currentGolfCourse = fetchCurrentGolfCourse('https://exquisite-pastelito-9d4dd1.netlify.app/golfapi/course11819.json'); 
 }
@@ -51,7 +52,6 @@ function fetchCurrentGolfCourseURL() {
     fetchCurrentGolfCourse(currentGolfCourseURL);
   }
   return currentGolfCourseURL;
-  return currentGolfCourseURL;
 }
 
 async function fetchCurrentGolfCourse(url) {
@@ -80,10 +80,7 @@ async function fetchCurrentGolfCourse(url) {
     }
     document.getElementById("selectedTeeBox").innerHTML = teeBoxSelectHtml;
     return currentGolfCourse;
-    return currentGolfCourse;
   } catch (error) {
-     console.error("Error:", error);
-     throw error;
      console.error("Error:", error);
      throw error;
   }
@@ -109,6 +106,38 @@ async function fetchData() {
   fetchCurrentGolfCourseURL();
 }
 
+class Player {
+  constructor (name, scores = []){
+    this.name = name;
+    // this.id = id;
+    this.scores = scores;
+  }
+  addingScores(){
+
+  }
+  assigningId (id){
+  }
+}
+
+function newPlayer(){
+  let name = document.getElementById('newPlayerInput').value;
+  //make a regex or a filter to find any name exactly equal to name and if so alert. if not run function.
+  if(name === Player.name){
+    alert('cant have same name')
+  }else{
+  const newPlayer = new Player(`${name}`)
+  listOfPlayers.push(newPlayer);
+  console.log(listOfPlayers)
+}
+
+}
+  function inputEnter(event) {
+    if(event.keyCode === 13){
+      if(event.target === document.getElementById('newPlayerInput')){
+        newPlayer();
+      clear();
+    }}};
+        
 function print(currentGolfCourse, currentTeeType) {
 
   let currHoles = currentGolfCourse.holes;
@@ -165,7 +194,7 @@ function print(currentGolfCourse, currentTeeType) {
   /// adding it all to the dom
 
   document.getElementById('mainTable').innerHTML = golfChart
-  console.log('currentTeeType', currentTeeType, 'currentGolfCourse', currentGolfCourse.city)
+  console.log(`currentTeeType: ${currentTeeType}`,`currentGolfCourse: ${currentGolfCourse.city}`)
 }
 
 
@@ -188,8 +217,9 @@ document.getElementById("selectedTeeBox").addEventListener('change', () => {
     currentTeeType = selectedHtmlTeeBox.value;
     print(currentGolfCourse, currentTeeType);
 });
-// make a bootsraps responsive table with different labels. hole yardage par handicap. also have rows for players.
-// input current feild, with data sets in the print function
+function clear(){
+  document.getElementById('newPlayerInput').value = '';
+};
 
 // create objects with classes for each player. this will allow you to keep each individual score
 
