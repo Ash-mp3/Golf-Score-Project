@@ -148,7 +148,6 @@ document.getElementById("selectedCourse").addEventListener('change', async () =>
    try {
     let url = fetchCurrentGolfCourseURL()
    await fetchCurrentGolfCourse(url);
-      console.log('fetched golf course has finished')
       defaultTeeType();
       print(currentGolfCourse, currentTeeType);
     }catch{
@@ -160,7 +159,6 @@ document.getElementById("selectedTeeBox").addEventListener('change', () => {
     currentTeeType = selectedHtmlTeeBox.value;
     print(currentGolfCourse, currentTeeType);
 });
-
 // make a bootsraps responsive table with different labels. hole yardage par handicap. also have rows for players.
 // input current feild, with data sets in the print function
 
