@@ -127,7 +127,7 @@ document.getElementById('leftArrow').addEventListener('click', () => {
   }
 })
 
-/// player class
+// player class
 
 class Player {
   constructor (name, scores = []){
