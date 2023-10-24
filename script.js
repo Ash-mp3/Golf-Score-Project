@@ -51,6 +51,7 @@ function fetchCurrentGolfCourseURL() {
     fetchCurrentGolfCourse(currentGolfCourseURL);
   }
   return currentGolfCourseURL;
+  return currentGolfCourseURL;
 }
 
 async function fetchCurrentGolfCourse(url) {
@@ -79,7 +80,10 @@ async function fetchCurrentGolfCourse(url) {
     }
     document.getElementById("selectedTeeBox").innerHTML = teeBoxSelectHtml;
     return currentGolfCourse;
+    return currentGolfCourse;
   } catch (error) {
+     console.error("Error:", error);
+     throw error;
      console.error("Error:", error);
      throw error;
   }
@@ -106,39 +110,64 @@ async function fetchData() {
 }
 
 function print(currentGolfCourse, currentTeeType) {
+
   let currHoles = currentGolfCourse.holes;
   let currYards = []
+  let totalYards = 0;
+  let currPar = []
+  let totalPar = 0;
+  let currHcp = [];
+  
+  /// getting the right tbox
+
   currHoles.forEach(elem => {
     let currBox = elem.teeBoxes
     let box = currBox.find((Object) => Object.teeType === currentTeeType)
     currYards.push(box.yards);
+    currPar.push(box.par)
+    currHcp.push(box.hcp)
   })
-  let golfChart = 
-    '<table class="table table-bordered">'+
-      '<tr class="col-10">'+
-        '<th>hole</th>'+
-        '<th>1</th>'+
-        '<th>2</th>'+
-        '<th>3</th>'+
-        '<th>4</th>'+
-        '<th>5</th>'+
-        '<th>6</th>'+
-        '<th>7</th>'+
-        '<th>8</th>'+
-        '<th>9</th>'+
-        '<th>out</th>'+
-      '</tr>'+
-    '<tr class="col-10">';
   
-  currYards.forEach(yard => {
-    golfChart += `<th class="">${yard}</th>`;
-  })
-  golfChart += '</tr>';
-  golfChart += '</table>';
+  /// printing holes
 
-  document.getElementById('tableCon').innerHTML = golfChart
-console.log(currentTeeType, currentGolfCourse)
+  let golfChart = '<tr class="col-10"><td>Hole</td>';
+  for(let i = 1; i < 19; i++) {
+    golfChart += `<td>${i}</td>`
+  }
+  golfChart += '<td>out</td> </tr>';
+
+  /// printing yards
+
+  golfChart += '<tr class="col-10"><td>Yard</td>';
+  currYards.forEach(yard => {
+    golfChart += `<td>${yard}</td>`;
+    totalYards += yard;
+  })
+  golfChart += `<td>${totalYards}</td></tr>`;
+
+  /// print par
+
+  golfChart += '<tr class="col-10"><td>Par</td>';
+  currPar.forEach(par => {
+    golfChart += `<td>${par}</td>`;
+    totalPar += par;
+  })
+  golfChart += `<td>${totalPar}</td></tr>`;
+
+  /// print hcp 
+
+  golfChart += '<tr class="col-10"><td>HCP</td>';
+  currHcp.forEach(hcp => {
+    golfChart += `<td>${hcp}</td>`
+  })
+  golfChart += `<td> </td></tr>`;
+
+  /// adding it all to the dom
+
+  document.getElementById('mainTable').innerHTML = golfChart
+  console.log('currentTeeType', currentTeeType, 'currentGolfCourse', currentGolfCourse.city)
 }
+
 
 function printTable() {}
 
