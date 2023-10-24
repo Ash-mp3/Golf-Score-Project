@@ -8,6 +8,12 @@
 html, body {
     height: 100%;
 }
+.main {
+    background-image: url('images/grassBackground.jpg');
+    background-size: cover;
+    /* filter: blur(8px);
+    -webkit-filter: blur(8px); */
+}
 
 /* nav */
 
