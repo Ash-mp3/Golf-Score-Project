@@ -2,6 +2,33 @@
 //setting current TeeType default
 let currentTeeType;
 let currentGolfCourse;
+if(currentGolfCourse === undefined){
+  currentGolfCourse = fetchCurrentGolfCourse('https://exquisite-pastelito-9d4dd1.netlify.app/golfapi/course11819.json'); 
+}
+if(currentTeeType === undefined && currentGolfCourse ==! undefined){
+  defaultTeeType();
+  };
+  function defaultTeeType() {
+    // Initialize the defaultTeeType to a default value
+    // Loop through the holes in the currentGolfCourse
+    currentGolfCourse.holes.forEach((hole) => {
+      // Check if the teeBoxes array is not empty
+      if (hole.teeBoxes.length > 0) {
+        // Get the first tee box (teeType) for the current hole
+        const firstTeeBox = hole.teeBoxes[0];
+  
+        // Set the defaultTeeType to the teeType of the first tee box
+        currentTeeType = firstTeeBox.teeType;
+  
+        // You can break out of the loop if you want to stop after finding the first tee type
+        return;
+      }
+    });
+  
+    // Return the defaultTeeType
+    return currentTeeType;
+  }
+  
 async function getCourses() {
   try {
     const response = await fetch(
@@ -27,6 +54,7 @@ function fetchCurrentGolfCourseURL() {
   if (currentGolfCourseURL) {
     fetchCurrentGolfCourse(currentGolfCourseURL);
   }
+  return currentGolfCourseURL;
 }
 
 async function fetchCurrentGolfCourse(url) {
@@ -51,15 +79,14 @@ async function fetchCurrentGolfCourse(url) {
       if (totalYards.hasOwnProperty(property)) {
         const yards = totalYards[property];
         teeBoxSelectHtml += `<option value="${property}">${property.toUpperCase()}, ${yards} yards</option>`;
-      
       }
     }
     document.getElementById("selectedTeeBox").innerHTML = teeBoxSelectHtml;
+    return currentGolfCourse;
   } catch (error) {
-    // console.error("Error:", error);
+     console.error("Error:", error);
+     throw error;
   }
-
-  
 }
 async function fetchData() {
   try {
@@ -141,12 +168,21 @@ function print(currentGolfCourse, currentTeeType) {
   console.log('currentTeeType', currentTeeType, 'currentGolfCourse', currentGolfCourse.city)
 }
 
+
 function printTable() {}
 
 // run funciton on change or window load. put this into a window load function if we do local storage
 fetchData();
-document.getElementById("selectedCourse").addEventListener('change', () => {
-    fetchCurrentGolfCourseURL();
+document.getElementById("selectedCourse").addEventListener('change', async () => {
+   try {
+    let url = fetchCurrentGolfCourseURL()
+   await fetchCurrentGolfCourse(url);
+      console.log('fetched golf course has finished')
+      defaultTeeType();
+      print(currentGolfCourse, currentTeeType);
+    }catch{
+      console.error('Error:', error)
+     } 
 });
 document.getElementById("selectedTeeBox").addEventListener('change', () => {
   selectedHtmlTeeBox = document.getElementById('selectedTeeBox')
