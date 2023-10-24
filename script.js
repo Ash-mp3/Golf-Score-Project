@@ -2,6 +2,7 @@
 //setting current TeeType default
 let currentTeeType;
 let currentGolfCourse;
+let pageNum = 1;
 if(currentGolfCourse === undefined){
   currentGolfCourse = fetchCurrentGolfCourse('https://exquisite-pastelito-9d4dd1.netlify.app/golfapi/course11819.json'); 
 }
@@ -51,7 +52,6 @@ function fetchCurrentGolfCourseURL() {
     fetchCurrentGolfCourse(currentGolfCourseURL);
   }
   return currentGolfCourseURL;
-  return currentGolfCourseURL;
 }
 
 async function fetchCurrentGolfCourse(url) {
@@ -80,10 +80,7 @@ async function fetchCurrentGolfCourse(url) {
     }
     document.getElementById("selectedTeeBox").innerHTML = teeBoxSelectHtml;
     return currentGolfCourse;
-    return currentGolfCourse;
   } catch (error) {
-     console.error("Error:", error);
-     throw error;
      console.error("Error:", error);
      throw error;
   }
@@ -109,6 +106,37 @@ async function fetchData() {
   fetchCurrentGolfCourseURL();
 }
 
+
+/// switch page function
+
+document.getElementById('rightArrow').addEventListener('click', () => {
+  if(pageNum === 1) {
+    pageNum = 2;
+    document.getElementById('leftArrow').classList.remove('clikcedArrow')
+    document.getElementById('rightArrow').classList.add('clikcedArrow')
+    print(currentGolfCourse, currentTeeType);
+  }
+})
+document.getElementById('leftArrow').addEventListener('click', () => {
+  if(pageNum === 2) {
+    pageNum = 1;
+    document.getElementById('rightArrow').classList.remove('clikcedArrow')
+    document.getElementById('leftArrow').classList.add('clikcedArrow')
+    print(currentGolfCourse, currentTeeType);
+  }
+})
+
+// if(pageNum === 1) {
+//   document.getElementById('rightArrow').classList.remove('clikcedArrow')
+//   document.getElementById('leftArrow').classList.add('clikcedArrow')
+// }
+// if(pageNum === 2) {
+//   document.getElementById('leftArrow').classList.remove('clikcedArrow')
+//   document.getElementById('rightArrow').classList.add('clikcedArrow')
+// }
+
+/// print function 
+
 function print(currentGolfCourse, currentTeeType) {
 
   let currHoles = currentGolfCourse.holes;
@@ -121,19 +149,33 @@ function print(currentGolfCourse, currentTeeType) {
   /// getting the right tbox
 
   currHoles.forEach(elem => {
-    let currBox = elem.teeBoxes
-    let box = currBox.find((Object) => Object.teeType === currentTeeType)
+    let box = elem.teeBoxes.find((Object) => Object.teeType === currentTeeType)
     currYards.push(box.yards);
     currPar.push(box.par)
     currHcp.push(box.hcp)
   })
+
+  if (pageNum === 1) {
+    currYards.splice(-9)
+    currPar.splice(-9)
+    currHcp.splice(-9)
+  } else if (pageNum === 2) {
+    currYards.splice(0,9)
+    currPar.splice(0,9)
+    currHcp.splice(0,9)
+  }
   
+  
+
   /// printing holes
 
   let golfChart = '<tr class="col-10"><td>Hole</td>';
-  for(let i = 1; i < 19; i++) {
-    golfChart += `<td>${i}</td>`
+  if (pageNum === 1) {
+    for(let i = 1; i < 10; i++) {golfChart += `<td>${i}</td>`}
+  } else if (pageNum === 2) {
+    for(let i = 10; i < 19; i++) {golfChart += `<td>${i}</td>`}
   }
+  
   golfChart += '<td>out</td> </tr>';
 
   /// printing yards
@@ -167,6 +209,7 @@ function print(currentGolfCourse, currentTeeType) {
   document.getElementById('mainTable').innerHTML = golfChart
   console.log('currentTeeType', currentTeeType, 'currentGolfCourse', currentGolfCourse.city)
 }
+
 
 
 function printTable() {}

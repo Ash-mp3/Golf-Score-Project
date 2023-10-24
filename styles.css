@@ -23,8 +23,6 @@ html, body {
     height: 100%;
 }
 
-
-
 /* table */
 
 table {
@@ -36,4 +34,13 @@ tbody {
     width: 100%;
 }
 
+/* arrows */
 
+#leftArrow:hover, #rightArrow:hover {
+    color: darkgrey;
+    cursor: pointer;
+}
+
+.clikcedArrow {
+    color: gray;
+}
