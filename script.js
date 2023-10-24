@@ -167,8 +167,10 @@ function print(currentGolfCourse, currentTeeType) {
 
   let currHoles = currentGolfCourse.holes;
   let currYards = []
+  let outYards = 0;
   let totalYards = 0;
   let currPar = []
+  let outPar = 0;
   let totalPar = 0;
   let currHcp = [];
   
@@ -177,7 +179,9 @@ function print(currentGolfCourse, currentTeeType) {
   currHoles.forEach(elem => {
     let box = elem.teeBoxes.find((Object) => Object.teeType === currentTeeType)
     currYards.push(box.yards);
+    totalYards += box.yards;
     currPar.push(box.par)
+    totalPar += box.par;
     currHcp.push(box.hcp)
   })
 
@@ -191,8 +195,6 @@ function print(currentGolfCourse, currentTeeType) {
     currHcp.splice(0,9)
   }
   
-  
-
   /// printing holes
 
   let golfChart = '<tr class="col-10"><td>Hole</td>';
@@ -201,30 +203,41 @@ function print(currentGolfCourse, currentTeeType) {
   } else if (pageNum === 2) {
     for(let i = 10; i < 19; i++) {golfChart += `<td>${i}</td>`}
   }
+  if (pageNum === 1) {
+    golfChart += '<td>out</td> </tr>';
+  } else {
+    golfChart += '<td>total</td> </tr>';
+  }
   
-  golfChart += '<td>out</td> </tr>';
-
   /// printing yards
 
   golfChart += '<tr class="col-10"><td>Yard</td>';
   currYards.forEach(yard => {
     golfChart += `<td>${yard}</td>`;
-    totalYards += yard;
+    outYards += yard;
   })
-  golfChart += `<td>${totalYards}</td></tr>`;
-
+  if (pageNum === 1) {
+    golfChart += `<td>${outYards}</td></tr>`;
+  } else {
+    golfChart += `<td>${totalYards}</td></tr>`;
+  }
+  
   /// print par
 
   golfChart += '<tr class="col-10"><td>Par</td>';
   currPar.forEach(par => {
     golfChart += `<td>${par}</td>`;
-    totalPar += par;
+    outPar += par;
   })
-  golfChart += `<td>${totalPar}</td></tr>`;
-
+  if (pageNum === 1) {
+    golfChart += `<td>${outPar}</td></tr>`;
+  } else {
+    golfChart += `<td>${totalPar}</td></tr>`;
+  }
+  
   /// print hcp 
 
-  golfChart += '<tr class="col-10"><td>HCP</td>';
+  golfChart += '<tr class="col-10"><td>Hcp</td>';
   currHcp.forEach(hcp => {
     golfChart += `<td>${hcp}</td>`
   })

@@ -11,33 +11,74 @@ html, body {
 .main {
     background-image: url('images/grassBackground.jpg');
     background-size: cover;
+    display: flex;
+    flex-direction: column;
     /* filter: blur(8px);
     -webkit-filter: blur(8px); */
 }
 
-/* nav */
-
-
-#scoreCardContainer {
-    padding: 0;
-    margin: 0;
+.row {
+    z-index: 2;
 }
 
+/* nav */
 
-#scoreCard {
-    width: 85%;
-    height: 100%;
+nav {
+    background-color: gray;
+    opacity: 90%;
+    
+}
+
+.h1 {
+    
+}
+/* options */
+
+#optionsContainer {
+    height: 70%;
+    width: 80%;
+    margin: auto;
+   
+
 }
 
 /* table */
 
-table {
-    
+#scoreCardContainer {
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+
+}
+
+#scoreCard {
+   
+    height: 100%;
+}
+
+#tableCon {
     width: 100%;
 }
 
+#mainTable {
+    border: 2px solid black;
+}
+
 tbody {
-    width: 100%;
+    width: 100%; 
+    
+}
+
+td {
+    width: 9% ;
+    padding: 10px;
+}
+
+@media (max-width: 600px) {
+     td{
+      font-size: 10px;
+      padding-right: 4px;
+    }
 }
 
 /* arrows */
