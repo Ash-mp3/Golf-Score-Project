@@ -19,12 +19,21 @@ html, body {
 
 
 #scoreCard {
-    width: 80%;
+    width: 85%;
     height: 100%;
 }
 
 
 
 /* table */
+
+table {
+    
+    width: 100%;
+}
+
+tbody {
+    width: 100%;
+}
 
 
