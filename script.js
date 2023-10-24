@@ -2,6 +2,33 @@
 //setting current TeeType default
 let currentTeeType;
 let currentGolfCourse;
+if(currentGolfCourse === undefined){
+  currentGolfCourse = fetchCurrentGolfCourse('https://exquisite-pastelito-9d4dd1.netlify.app/golfapi/course11819.json'); 
+}
+if(currentTeeType === undefined && currentGolfCourse ==! undefined){
+  defaultTeeType();
+  };
+  function defaultTeeType() {
+    // Initialize the defaultTeeType to a default value
+    // Loop through the holes in the currentGolfCourse
+    currentGolfCourse.holes.forEach((hole) => {
+      // Check if the teeBoxes array is not empty
+      if (hole.teeBoxes.length > 0) {
+        // Get the first tee box (teeType) for the current hole
+        const firstTeeBox = hole.teeBoxes[0];
+  
+        // Set the defaultTeeType to the teeType of the first tee box
+        currentTeeType = firstTeeBox.teeType;
+  
+        // You can break out of the loop if you want to stop after finding the first tee type
+        return;
+      }
+    });
+  
+    // Return the defaultTeeType
+    return currentTeeType;
+  }
+  
 async function getCourses() {
   try {
     const response = await fetch(
@@ -15,24 +42,6 @@ async function getCourses() {
     throw error;
   }
 }
-
-// async function getCoursesDetails(coursesId) {
-//   try {
-//     const response = await fetch(
-//       `https://exquisite-pastelito-9d4dd1.netlify.app/golfapi/course${coursesId}.json`,
-//       { mode: "cors" }
-//     );
-//     const data = await response.json();
-//     return data;
-//   } catch (error) {
-//     console.error("Error fetching course details:", error);
-//     throw error;
-//   }
-// }
-
-// steps needed for user options
-//make a golf corse select box. this will allow  you to select what course you want to use.
-// It will also go through the api, make a current list, and select that list and data.
 
 function fetchCurrentGolfCourseURL() {
   //currentGolfCourseId is the slectedCourses id value wich is only 5 digits. input htis into the url to get complete access to the golf courses data.
@@ -97,7 +106,6 @@ async function fetchData() {
 }
 
 function print(currentGolfCourse, currentTeeType) {
-  // print logic heref
   let currHoles = currentGolfCourse.holes;
   let golfChart = 
     '<table class="table table-bordered">'+
@@ -113,20 +121,26 @@ function print(currentGolfCourse, currentTeeType) {
         '<th class="">8</th>'+
         '<th class="">9</th>'+
         '<th class="">out</th>'+
+        //rest of table headers
       '</tr>';
-  
+  // populate table here
   golfChart += '</table>';
 
   document.getElementById('tableCon').innerHTML = golfChart
 console.log(currentTeeType, currentGolfCourse)
 }
-console.log(currentTeeType)
+window.onload = function () {
+  print(currentGolfCourse, currentTeeType);
+};
 function printTable() {}
 
 // run funciton on change or window load. put this into a window load function if we do local storage
 fetchData();
 document.getElementById("selectedCourse").addEventListener('change', () => {
     fetchCurrentGolfCourseURL();
+    
+    defaultTeeType();
+    print(currentGolfCourse, currentTeeType);
 });
 document.getElementById("selectedTeeBox").addEventListener('change', () => {
   selectedHtmlTeeBox = document.getElementById('selectedTeeBox')
