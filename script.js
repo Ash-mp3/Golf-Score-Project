@@ -135,7 +135,13 @@ class Player {
     // this.id = id;
     this.scores = scores;
   }
-  addingScores(){
+  printingPlayer(){
+    
+    let playerRow = `<tr class="col-10"><td>${this.name}</td>`;
+    for (let i = 0; i < 10; i++) {
+      playerRow += `<td></td>`
+    }
+    // document.getElementById('mainTable').innerHTML += playerRow;
 
   }
   assigningId (id){
@@ -151,6 +157,7 @@ function newPlayer(){
   const newPlayer = new Player(`${name}`)
   listOfPlayers.push(newPlayer);
   console.log(listOfPlayers)
+  newPlayer.printingPlayer(name)
 }
 
 }
@@ -158,7 +165,8 @@ function newPlayer(){
     if(event.keyCode === 13){
       if(event.target === document.getElementById('newPlayerInput')){
         newPlayer();
-      clear();
+        clear();
+        print(currentGolfCourse, currentTeeType);
     }}};
 
 /// print function 
@@ -243,15 +251,30 @@ function print(currentGolfCourse, currentTeeType) {
   })
   golfChart += `<td> </td></tr>`;
 
+  /// print players
+
+  console.log(listOfPlayers)
+
+  listOfPlayers.forEach(player => {
+    golfChart += `<tr class="col-10"><td>${player.name}</td>`
+    for (let i = 0; i < 9; i++) {
+      
+    }
+    golfChart += `</tr>`
+  })
+
   /// adding it all to the dom
 
   document.getElementById('mainTable').innerHTML = golfChart
   console.log(`currentTeeType: ${currentTeeType}`,`currentGolfCourse: ${currentGolfCourse.city}`)
 }
 
+/// print player row
+
+function printPlayer() {
 
 
-function printTable() {}
+}
 
 // run funciton on change or window load. put this into a window load function if we do local storage
 fetchData();
@@ -268,6 +291,7 @@ document.getElementById("selectedCourse").addEventListener('change', async () =>
 document.getElementById("selectedTeeBox").addEventListener('change', () => {
   selectedHtmlTeeBox = document.getElementById('selectedTeeBox')
     currentTeeType = selectedHtmlTeeBox.value;
+    console.log(currentGolfCourse.city, currentTeeType)
     print(currentGolfCourse, currentTeeType);
 });
 function clear(){
