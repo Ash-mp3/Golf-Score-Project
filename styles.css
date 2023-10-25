@@ -71,12 +71,19 @@ td {
     padding: 10px;
 }
 
+
+.scoreIn {
+    width: 100%;
+}
+
 @media (max-width: 600px) {
      td{
       font-size: 10px;
       padding-right: 4px;
     }
 }
+
+
 
 /* arrows */
 
