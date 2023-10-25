@@ -250,11 +250,6 @@ golfChart += `<td> </td></tr>`;
 document.getElementById('mainTable').innerHTML = golfChart
 console.log(`currentTeeType: ${currentTeeType}`,`currentGolfCourse: ${currentGolfCourse.city}`)
 }
-
-
-
-function printTable() {}
-
 // run funciton on change or window load. put this into a window load function if we do local storage
 fetchData();
 document.getElementById("selectedCourse").addEventListener('change', async () => {
@@ -275,8 +270,6 @@ print(currentGolfCourse, currentTeeType);
 function clear(){
 document.getElementById('newPlayerInput').value = '';
 };
-
-// create objects with classes for each player. this will allow you to keep each individual score
 
 // make a print function that will add up the scores and display the sum. there are 18 holes so an index of 0-17.
 
