@@ -133,7 +133,9 @@ document.getElementById("leftArrow").addEventListener("click", () => {
 // player class
 
 class Player {
-  constructor(name, id = listOfPlayers.length + 1,  scores = []) {
+  constructor(name, id = listOfPlayers.length + 1, scores) {
+    scores = [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,2]
+    // Array(18).fill(0)
     this.name = name;
      this.id = id;
     this.scores = scores;
@@ -159,33 +161,19 @@ function newPlayer() {
   } else {
     const newPlayer = new Player(`${name}`, listOfPlayers.length + 1);
     listOfPlayers.push(newPlayer);
-    console.log(listOfPlayers);
+    // console.log(listOfPlayers);
   }
 }
 function inputEnter(event) {
   if (event.keyCode === 13) {
     if (event.target === document.getElementById("newPlayerInput")) {
-      if(currentGolfCourse && currentTeeType){
-        newPlayer();
+      newPlayer();
       clear();
       print(currentGolfCourse, currentTeeType);
-      }
-      else{
-        alert('select a current golf course');
-        clear();
-      }
-      
     }
   }
 }
 
-function playerSuccess(){
-//get a list of all total scores of players. print them out with a toast.
-// const bestPlayer = Math.min(listOfPlayers);
-// toastr.success(`${bestPlayer}, YOU ARE THE WINNER!`);
-// console.log(bestPlayer)
-resetButton();
-}
 /// print function
 
 function print(currentGolfCourse, currentTeeType) {
@@ -269,12 +257,48 @@ function print(currentGolfCourse, currentTeeType) {
   currHcp.forEach((hcp) => {
     golfChart += `<td>${hcp}</td>`;
   });
-  golfChart += `<td> </td></tr>`;
+  golfChart += `<td>N/A</td></tr>`;
+
+  /// print players
+
+  console.log(listOfPlayers);
 
   listOfPlayers.forEach((player) => {
     golfChart += `<tr class="col-10"><td>${player.name}</td>`;
-    for (let i = 0; i < 9; i++) {}
-    golfChart += `</tr>`;
+    if (pageNum === 1) {
+      let count = 1;
+      let outScore = 0;
+      let newPlayerScore = player.scores.slice(9);
+      newPlayerScore.forEach(score => {
+        outScore += score;
+        if(score === 0) {
+          golfChart += `<td><input type="text" class="scoreIn" id="${player.name}${count}"></td>`
+        }
+        if(score !== 0) {
+          golfChart += `<td>${score}</td>`
+        }
+        count += 1;
+      })
+      golfChart += `<td>${outScore}</td></tr>`;
+    }
+    if (pageNum === 2) {
+      let count = 10;
+      let totalScore = 0;
+      player.scores.forEach(elem => {
+        totalScore += elem
+      })
+      let newPlayerScore = player.scores.slice(0,-9);
+      newPlayerScore.forEach(score => {
+        if(score === 0) {
+          golfChart += `<td><input type="text" class="scoreIn" id="${player.name}${count}"></td>`
+        }
+        if(score !== 0) {
+          golfChart += `<td>${score}</td>`
+        }
+        count += 1;
+      })
+      golfChart += `<td>${totalScore}</td></tr>`;
+    }
   });
 
   /// adding it all to the dom
