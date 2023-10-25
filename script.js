@@ -337,6 +337,11 @@ function resetButton(){
 }
 function reset(){
   console.log('reset')
+currentTeeType;
+ currentGolfCourse;
+ pageNum = 1;
+ listOfPlayers = [];
+ document.getElementById('resetButtonHtml').innerHTML = '';
 }
 // make a print function that will add up the scores and display the sum. there are 18 holes so an index of 0-17.
 
