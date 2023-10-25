@@ -134,7 +134,7 @@ document.getElementById("leftArrow").addEventListener("click", () => {
 
 class Player {
   constructor(name, id = listOfPlayers.length + 1, scores) {
-    scores = [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,2]
+    scores = [9,2,2,2,2,2,2,2,2,18,2,2,2,2,2,2,2,2]
     // Array(18).fill(0)
     this.name = name;
      this.id = id;
@@ -268,7 +268,7 @@ function print(currentGolfCourse, currentTeeType) {
     if (pageNum === 1) {
       let count = 1;
       let outScore = 0;
-      let newPlayerScore = player.scores.slice(9);
+      let newPlayerScore = player.scores.slice(0,-9);
       newPlayerScore.forEach(score => {
         outScore += score;
         if(score === 0) {
@@ -287,7 +287,7 @@ function print(currentGolfCourse, currentTeeType) {
       player.scores.forEach(elem => {
         totalScore += elem
       })
-      let newPlayerScore = player.scores.slice(0,-9);
+      let newPlayerScore = player.scores.slice(9);
       newPlayerScore.forEach(score => {
         if(score === 0) {
           golfChart += `<td><input type="text" class="scoreIn" id="${player.name}${count}"></td>`
