@@ -130,12 +130,18 @@ print(currentGolfCourse, currentTeeType);
 // player class
 
 class Player {
-constructor (name, id, scores = []){
-this.name = name;
-this.id = id;
-this.scores = scores;
-}
-addingScores(){
+  constructor (name, scores = []){
+    this.name = name;
+    // this.id = id;
+    this.scores = scores;
+  }
+  printingPlayer(){
+    
+    let playerRow = `<tr class="col-10"><td>${this.name}</td>`;
+    for (let i = 0; i < 10; i++) {
+      playerRow += `<td></td>`
+    }
+    // document.getElementById('mainTable').innerHTML += playerRow;
 
 }
 }
@@ -156,12 +162,13 @@ console.log(listOfPlayers)
 }
 
 }
-function inputEnter(event) {
-if(event.keyCode === 13){
-if(event.target === document.getElementById('newPlayerInput')){
-newPlayer();
-clear();
-}}};
+  function inputEnter(event) {
+    if(event.keyCode === 13){
+      if(event.target === document.getElementById('newPlayerInput')){
+        newPlayer();
+        clear();
+        print(currentGolfCourse, currentTeeType);
+    }}};
 
 /// print function 
 
@@ -239,11 +246,23 @@ golfChart += `<td>${totalPar}</td></tr>`;
 
 /// print hcp 
 
-golfChart += '<tr class="col-10"><td>Hcp</td>';
-currHcp.forEach(hcp => {
-golfChart += `<td>${hcp}</td>`
-})
-golfChart += `<td> </td></tr>`;
+  golfChart += '<tr class="col-10"><td>Hcp</td>';
+  currHcp.forEach(hcp => {
+    golfChart += `<td>${hcp}</td>`
+  })
+  golfChart += `<td> </td></tr>`;
+
+  /// print players
+
+  console.log(listOfPlayers)
+
+  listOfPlayers.forEach(player => {
+    golfChart += `<tr class="col-10"><td>${player.name}</td>`
+    for (let i = 0; i < 9; i++) {
+      
+    }
+    golfChart += `</tr>`
+  })
 
 /// adding it all to the dom
 
@@ -251,9 +270,12 @@ document.getElementById('mainTable').innerHTML = golfChart
 console.log(`currentTeeType: ${currentTeeType}`,`currentGolfCourse: ${currentGolfCourse.city}`)
 }
 
+/// print player row
+
+function printPlayer() {
 
 
-function printTable() {}
+}
 
 // run funciton on change or window load. put this into a window load function if we do local storage
 fetchData();
@@ -268,9 +290,10 @@ console.error('Error:', error)
 } 
 });
 document.getElementById("selectedTeeBox").addEventListener('change', () => {
-selectedHtmlTeeBox = document.getElementById('selectedTeeBox')
-currentTeeType = selectedHtmlTeeBox.value;
-print(currentGolfCourse, currentTeeType);
+  selectedHtmlTeeBox = document.getElementById('selectedTeeBox')
+    currentTeeType = selectedHtmlTeeBox.value;
+    console.log(currentGolfCourse.city, currentTeeType)
+    print(currentGolfCourse, currentTeeType);
 });
 function clear(){
 document.getElementById('newPlayerInput').value = '';
