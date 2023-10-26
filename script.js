@@ -3,6 +3,7 @@ let currentTeeType;
 let currentGolfCourse;
 let pageNum = 1;
 let listOfPlayers = [];
+let totalsArray = [];
 if (currentGolfCourse === undefined) {
   currentGolfCourse = fetchCurrentGolfCourse(
     "https://exquisite-pastelito-9d4dd1.netlify.app/golfapi/course11819.json"
@@ -133,22 +134,20 @@ document.getElementById("leftArrow").addEventListener("click", () => {
 // player class
 
 class Player {
-  constructor(name, id = listOfPlayers.length + 1, scores) {
+  constructor(name, id = listOfPlayers.length + 1, scores, playerTotal) {
     scores = Array(18).fill(0);
-    // Array(18).fill(0)[9,2,2,2,2,2,2,2,2,18,2,2,2,2,2,2,2,2]
     this.name = name;
      this.id = id;
     this.scores = scores;
+    playerTotal = 0;
   }
   printingPlayer() {
     let playerRow = `<tr class="col-10"><td>${this.name}</td>`;
     for (let i = 0; i < 10; i++) {
       playerRow += `<td></td>`;
     }
-    // document.getElementById('mainTable').innerHTML += playerRow;
   }
 }
-
 function newPlayer() {
   let name = document.getElementById("newPlayerInput").value;
   //make a regex or a filter to find any name exactly equal to name and if so alert. if not run function.
@@ -157,11 +156,27 @@ function newPlayer() {
   // alert('cant have same name')
   // }
   if (listOfPlayers.length > 3) {
-    alert("Maximum Players");
+    toastr["error"]("Maximum Players", "Max")
+toastr.options = {
+  "closeButton": false,
+  "debug": false,
+  "newestOnTop": false,
+  "progressBar": true,
+  "positionClass": "toast-top-center",
+  "preventDuplicates": false,
+  "onclick": null,
+  "showDuration": "300",
+  "hideDuration": "1000",
+  "timeOut": "5000",
+  "extendedTimeOut": "1000",
+  "showEasing": "swing",
+  "hideEasing": "linear",
+  "showMethod": "fadeIn",
+  "hideMethod": "fadeOut"
+}
   } else {
     const newPlayer = new Player(`${name}`, listOfPlayers.length + 1);
     listOfPlayers.push(newPlayer);
-    // console.log(listOfPlayers);
   }
 }
 function inputEnter(event) {
@@ -173,12 +188,47 @@ function inputEnter(event) {
     }
   }
 }
-function playerSuccess(){
-  let bestPlayer = 18;
-  //get a list of all total scores of players. print them out with a toast.
-  // const bestPlayer = Math.min(listOfPlayers);
-   toastr.success(`${bestPlayer}, YOU ARE THE WINNER!`);
-  // console.log(bestPlayer)
+function checkIfHolesAreCompleted() {
+  const playerRows = document.querySelectorAll('.playerDomRow');
+  let completedAllHoles = true; // Initialize as true
+
+  for (let i = 0; i < playerRows.length; i++) {
+    const cells = playerRows[i].querySelectorAll('td'); // Assuming you want to check td elements
+
+    for (let j = 0; j < cells.length; j++) {
+      const cell = cells[j];
+      if (cell.textContent.trim() === '') {
+        completedAllHoles = false; // If any cell is empty, set it to false
+        break; // No need to check the rest, we already found an empty cell
+      }
+    }
+
+    if (!completedAllHoles) {
+      break; // No need to check the rest of the rows, we already found an empty cell
+    }
+  }
+
+  if (completedAllHoles) {
+    listOfPlayers.forEach((player) => {
+      totalsArray += player.playerTotal;
+    })
+    const bestScore = Math.min(totalsArray);
+    let bestPlayer = '';
+    listOfPlayers.forEach((player) => {
+      if(player.playerTotal === bestScore){
+         bestPlayer = capitalizeFirstName(player.name);
+      }
+    })
+    playerSuccess(bestPlayer, bestScore);
+  }
+}
+//makesure that each player has all 18 holes with no spaces.
+// get each total holes and list them from smallest to biggest.
+//shift of first and let that equal best player. run through playerSuccess.
+
+
+function playerSuccess(bestPlayer, bestScore){
+   toastr.success(`${bestPlayer}, YOU ARE THE WINNER WITH A SCORE OF ${bestScore}!`);
   resetButton();
   }
 /// print function
@@ -269,9 +319,9 @@ function print(currentGolfCourse, currentTeeType) {
   /// print players
 
   listOfPlayers.forEach((player) => {
-    golfChart += `<tr class="col-10">
+    golfChart += `<tr class="col-10 playerDomRow">
       <td class="editable-cell">
-        <span id="name-${player.id}" class="editable-name" onclick="showDropdown(this)">${player.name}</span>
+        <span id="name-${player.id}" class="editable-name" onclick="showDropdown(this)">${capitalizeFirstName(player.name)}</span>
         <div class="dropdown-content">
           <a href="javascript:void(0)" id="edit-${player.id}" onclick="editPlayerName(this.id)">Edit</a>
           <a href="javascript:void(0)" onclick="removeName(this)">Remove</a>
@@ -284,7 +334,7 @@ function print(currentGolfCourse, currentTeeType) {
       newPlayerScore.forEach(score => {
         outScore += score;
         if(score === 0) {
-          golfChart += `<td><input type="Number" class="scoreIn" id="${player.id}-${count}"></td>`
+          golfChart += `<td><input type="text" class="scoreIn" id="${player.id}-${count}"></td>`
         }
         if(score !== 0) {
           golfChart += `<td>${score}</td>`
@@ -298,11 +348,12 @@ function print(currentGolfCourse, currentTeeType) {
       let totalScore = 0;
       player.scores.forEach(elem => {
         totalScore += elem
-      })
+      });
+      player.playerTotal = totalScore
       let newPlayerScore = player.scores.slice(9);
       newPlayerScore.forEach(score => {
         if(score === 0) {
-          golfChart += `<td><input type="Number" class="scoreIn" id="${player.id}-${count}"></td>`
+          golfChart += `<td><input type="text" class="scoreIn" id="${player.id}-${count}"></td>`
         }
         if(score !== 0) {
           golfChart += `<td>${score}</td>`
@@ -321,6 +372,9 @@ function print(currentGolfCourse, currentTeeType) {
     `currentGolfCourse: ${currentGolfCourse.city}`
   );
   scoreInput();
+  if(listOfPlayers.length > 0){
+  checkIfHolesAreCompleted()
+}
 }
 
 /// input scores
@@ -329,26 +383,46 @@ function scoreInput() {
   listOfPlayers.forEach(player => {
     let playerIn = document.querySelectorAll(`[id^="${player.id}"]`);
     playerIn.forEach(elem => {
-      elem.addEventListener('keypress', function(e) {
-        if(e.key === 'Enter') {
-          let input = Number(elem.value)
-          console.log(elem.id.length)
-          let inputNum;
-          if(elem.id.length === 3) {
-            inputNum = Number(elem.id.slice(-1)) -1
+      elem.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === 'Tab') {
+          if (elem.value > 0) {
+            let input = Number(elem.value);
+            let inputNum;
+            if (elem.id.length === 3) {
+              inputNum = Number(elem.id.slice(-1)) - 1;
+            } else {
+              inputNum = Number(elem.id.slice(-2)) - 1;
+            }
+            player.scores.splice(inputNum, 1, input);
+            // elem.replaceWith(input)
+            print(currentGolfCourse, currentTeeType);
           } else {
-            inputNum = Number(elem.id.slice(-2)) -1
+            toastr["error"]("Not a valid golf score", "Error");
+            toastr.options = {
+              "closeButton": false,
+              "debug": false,
+              "newestOnTop": false,
+              "progressBar": true,
+              "positionClass": "toast-top-center",
+              "preventDuplicates": false,
+              "onclick": null,
+              "showDuration": "300",
+              "hideDuration": "1000",
+              "timeOut": "5000",
+              "extendedTimeOut": "1000",
+              "showEasing": "swing",
+              "hideEasing": "linear",
+              "showMethod": "fadeIn",
+              "hideMethod": "fadeOut"
+            };
+            // Clear input if incorrect
+            elem.value = '';
           }
-          player.scores.splice(inputNum, 1, input)
-          // elem.replaceWith(input)
-          console.log(player.scores)
-          print(currentGolfCourse, currentTeeType);
         }
-      })
-    })
-  })
+      });
+    });
+  });
 }
-
 // run funciton on change or window load. put this into a window load function if we do local storage
 
 fetchData();
@@ -378,7 +452,6 @@ function resetButton(){
   document.getElementById('resetButtonHtml').innerHTML = htmlResetButton;
 }
 function reset(){
-  console.log('reset')
   window.location.reload();
   
 // currentTeeType;
@@ -400,7 +473,7 @@ function editPlayerName(editId) {
    if(player.id == playerId){
     const newName = prompt(`Enter a new name for ${player.name}:`);
    if (newName !== null) {
-     player.name = newName;
+     player.name = capitalizeFirstName(newName);
      const playerElement = document.getElementById(`name-${player.id}`);
      if (playerElement) {
        playerElement.textContent = newName;
@@ -412,10 +485,23 @@ function editPlayerName(editId) {
 function removeName(link) {
   const confirmation = confirm("Are you sure you want to remove this name?");
   if (confirmation) {
-    const cell = link.parentNode.parentNode;
+    const span = link.parentNode.parentNode.firstChild.nextElementSibling;
+    const spanId = span.id;
+    const playerId = spanId.replace(/[^0-9]/g, '');
+    const playerNumIndex  = (parseInt(playerId)-1);
+    listOfPlayers.splice(playerNumIndex, 1);
+    const cell = link.parentNode.parentNode.parentNode;
     cell.parentNode.removeChild(cell);
   }
+   
 }
-// make a print function that will add up the scores and display the sum. there are 18 holes so an index of 0-17.
+//just for fun capatilizing first names
+function capitalizeFirstName(name) {
+  // Check if the name is empty or consists of only spaces
+  if (name.trim() === "") {
+    return name;
+  }
 
-// use toasts to display when the user has finished a game.
+  // Capitalize the first character and concatenate with the rest of the string
+  return name.charAt(0).toUpperCase() + name.slice(1);
+}

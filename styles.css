@@ -127,13 +127,17 @@ td {
   .editable-name:hover + .dropdown-content, .dropdown-content:hover {
     display: block;
   }
+  /*text align in the center*/
+  td {
+    text-align: center;
+  }
+  td span {
+    text-align: center;
+  }
 /*font size fix at small
 center on page
 link up success with total
 work on player multiple names and max letters
 put bar seperating players and cards
-make an edit and delete button
 work on local storage
-
-set limit on app so you cant but 0 and negatives*/
-
+animate slides*/
