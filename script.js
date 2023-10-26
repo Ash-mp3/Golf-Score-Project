@@ -134,8 +134,8 @@ document.getElementById("leftArrow").addEventListener("click", () => {
 
 class Player {
   constructor(name, id = listOfPlayers.length + 1, scores) {
-    scores = [9,2,2,2,2,2,2,2,2,18,2,2,2,2,2,2,2,2]
-    // Array(18).fill(0)
+    scores = Array(18).fill(0);
+    // Array(18).fill(0)[9,2,2,2,2,2,2,2,2,18,2,2,2,2,2,2,2,2]
     this.name = name;
      this.id = id;
     this.scores = scores;
@@ -261,8 +261,6 @@ function print(currentGolfCourse, currentTeeType) {
 
   /// print players
 
-  console.log(listOfPlayers);
-
   listOfPlayers.forEach((player) => {
     golfChart += `<tr class="col-10"><td>${player.name}</td>`;
     if (pageNum === 1) {
@@ -272,7 +270,7 @@ function print(currentGolfCourse, currentTeeType) {
       newPlayerScore.forEach(score => {
         outScore += score;
         if(score === 0) {
-          golfChart += `<td><input type="text" class="scoreIn" id="${player.name}${count}"></td>`
+          golfChart += `<td><input type="Number" class="scoreIn" id="${player.id}-${count}"></td>`
         }
         if(score !== 0) {
           golfChart += `<td>${score}</td>`
@@ -290,7 +288,7 @@ function print(currentGolfCourse, currentTeeType) {
       let newPlayerScore = player.scores.slice(9);
       newPlayerScore.forEach(score => {
         if(score === 0) {
-          golfChart += `<td><input type="text" class="scoreIn" id="${player.name}${count}"></td>`
+          golfChart += `<td><input type="Number" class="scoreIn" id="${player.id}-${count}"></td>`
         }
         if(score !== 0) {
           golfChart += `<td>${score}</td>`
@@ -308,8 +306,37 @@ function print(currentGolfCourse, currentTeeType) {
     `currentTeeType: ${currentTeeType}`,
     `currentGolfCourse: ${currentGolfCourse.city}`
   );
+  scoreInput();
 }
+
+/// input scores
+
+function scoreInput() {
+  listOfPlayers.forEach(player => {
+    let playerIn = document.querySelectorAll(`[id^="${player.id}"]`);
+    playerIn.forEach(elem => {
+      elem.addEventListener('keypress', function(e) {
+        if(e.key === 'Enter') {
+          let input = Number(elem.value)
+          console.log(elem.id.length)
+          let inputNum;
+          if(elem.id.length === 3) {
+            inputNum = Number(elem.id.slice(-1)) -1
+          } else {
+            inputNum = Number(elem.id.slice(-2)) -1
+          }
+          player.scores.splice(inputNum, 1, input)
+          // elem.replaceWith(input)
+          console.log(player.scores)
+          print(currentGolfCourse, currentTeeType);
+        }
+      })
+    })
+  })
+}
+
 // run funciton on change or window load. put this into a window load function if we do local storage
+
 fetchData();
 document
   .getElementById("selectedCourse")
