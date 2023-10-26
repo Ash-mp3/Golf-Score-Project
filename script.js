@@ -269,7 +269,14 @@ function print(currentGolfCourse, currentTeeType) {
   /// print players
 
   listOfPlayers.forEach((player) => {
-    golfChart += `<tr class="col-10"><td>${player.name}</td>`;
+    golfChart += `<tr class="col-10">
+      <td class="editable-cell">
+        <span id="name-${player.id}" class="editable-name" onclick="showDropdown(this)">${player.name}</span>
+        <div class="dropdown-content">
+          <a href="javascript:void(0)" id="edit-${player.id}" onclick="editPlayerName(this.id)">Edit</a>
+          <a href="javascript:void(0)" onclick="removeName(this)">Remove</a>
+        </div>
+      </td>`;
     if (pageNum === 1) {
       let count = 1;
       let outScore = 0;
@@ -362,6 +369,7 @@ document.getElementById("selectedTeeBox").addEventListener("change", () => {
   currentTeeType = selectedHtmlTeeBox.value;
   print(currentGolfCourse, currentTeeType);
 });
+
 function clear() {
   document.getElementById("newPlayerInput").value = "";
 }
@@ -372,11 +380,41 @@ function resetButton(){
 function reset(){
   console.log('reset')
   window.location.reload();
+  
 // currentTeeType;
 //  currentGolfCourse;
 //  pageNum = 1;
 //  listOfPlayers = [];
 //  document.getElementById('resetButtonHtml').innerHTML = '';
+}
+
+//drop down name editing
+function showDropdown(span) {
+  const dropdown = span.nextElementSibling;
+  dropdown.style.display = "block";
+}
+
+function editPlayerName(editId) {
+  const playerId = editId.replace(/[^0-9]/g, '');
+  listOfPlayers.forEach((player) => {
+   if(player.id == playerId){
+    const newName = prompt(`Enter a new name for ${player.name}:`);
+   if (newName !== null) {
+     player.name = newName;
+     const playerElement = document.getElementById(`name-${player.id}`);
+     if (playerElement) {
+       playerElement.textContent = newName;
+     }
+   }
+   }
+  }) 
+};
+function removeName(link) {
+  const confirmation = confirm("Are you sure you want to remove this name?");
+  if (confirmation) {
+    const cell = link.parentNode.parentNode;
+    cell.parentNode.removeChild(cell);
+  }
 }
 // make a print function that will add up the scores and display the sum. there are 18 holes so an index of 0-17.
 
