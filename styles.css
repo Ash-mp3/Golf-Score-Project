@@ -24,16 +24,19 @@ html, body {
 /* nav */
 
 nav {
-    background-color: gray;
+    background-color: #dad7cd;
     opacity: 90%;
     
 }
 
+#choicesContainer {
+    background-color: #588157;
+    
+}
 /* options */
 
 #optionsContainer {
-    height: 70%;
-    width: 80%;
+    width: 100%;
     margin: auto;
    
 
@@ -45,20 +48,24 @@ nav {
     padding: 0;
     margin: 0;
     flex-grow: 1;
+    
 
 }
 
 #scoreCard {
-   
-    height: 100%;
+    background-color: #344e41;
 }
 
 #tableCon {
     width: 100%;
+    background-color: white;
+    border-radius: 20px;
+    
 }
 
 #mainTable {
-    border: 2px solid black;
+    border: 1px solid #6c757d;
+    
 }
 
 tbody {
@@ -95,3 +102,12 @@ td {
 .clikcedArrow {
     color: gray;
 }
+
+
+/*font size fix at small
+center on page
+link up success with total
+work on player multiple names and max letters
+put bar seperating players and cards
+fix reset button
+work on local storage*/

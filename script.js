@@ -173,7 +173,14 @@ function inputEnter(event) {
     }
   }
 }
-
+function playerSuccess(){
+  let bestPlayer = 18;
+  //get a list of all total scores of players. print them out with a toast.
+  // const bestPlayer = Math.min(listOfPlayers);
+   toastr.success(`${bestPlayer}, YOU ARE THE WINNER!`);
+  // console.log(bestPlayer)
+  resetButton();
+  }
 /// print function
 
 function print(currentGolfCourse, currentTeeType) {
@@ -332,16 +339,17 @@ function clear() {
   document.getElementById("newPlayerInput").value = "";
 }
 function resetButton(){
- const htmlResetButton= '<div class="btn btn-danger w-25 h-50 fw-bold" onClick="reset()">Reset</div>'
+ const htmlResetButton= '<div class="btn btn-danger w-25 h-100 fw-bold" onClick="reset()">Reset</div>'
   document.getElementById('resetButtonHtml').innerHTML = htmlResetButton;
 }
 function reset(){
   console.log('reset')
-currentTeeType;
- currentGolfCourse;
- pageNum = 1;
- listOfPlayers = [];
- document.getElementById('resetButtonHtml').innerHTML = '';
+  window.location.reload();
+// currentTeeType;
+//  currentGolfCourse;
+//  pageNum = 1;
+//  listOfPlayers = [];
+//  document.getElementById('resetButtonHtml').innerHTML = '';
 }
 // make a print function that will add up the scores and display the sum. there are 18 holes so an index of 0-17.
 
