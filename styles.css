@@ -99,10 +99,12 @@ td {
     cursor: pointer;
 }
 
-.clikcedArrow {
+.clickedArrow {
     color: gray;
 }
-
+.animate__animated.animate__slideInRight.animate__slideInLeft {
+    --animate-duration: 5s;
+}
 /*drop down menu*/
 .dropdown-content {
     display: none;
@@ -136,8 +138,9 @@ td {
   }
 /*font size fix at small
 center on page
-link up success with total
 work on player multiple names and max letters
 put bar seperating players and cards
 work on local storage
-animate slides*/
+animate slides
+animate completion
+*/

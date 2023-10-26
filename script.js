@@ -113,20 +113,24 @@ async function fetchData() {
 }
 
 /// switch page function
-
+const tableCon = document.getElementById('tableCon')
 document.getElementById("rightArrow").addEventListener("click", () => {
   if (pageNum === 1) {
     pageNum = 2;
-    document.getElementById("leftArrow").classList.remove("clikcedArrow");
-    document.getElementById("rightArrow").classList.add("clikcedArrow");
+    tableCon.classList.add('animate__slideInRight')
+    tableCon.classList.remove('animate__slideInLeft')
+    document.getElementById("leftArrow").classList.remove("clickedArrow");
+    document.getElementById("rightArrow").classList.add("clickedArrow");
     print(currentGolfCourse, currentTeeType);
   }
 });
 document.getElementById("leftArrow").addEventListener("click", () => {
   if (pageNum === 2) {
     pageNum = 1;
-    document.getElementById("rightArrow").classList.remove("clikcedArrow");
-    document.getElementById("leftArrow").classList.add("clikcedArrow");
+    tableCon.classList.remove('animate__slideInRight')
+    tableCon.classList.add('animate__slideInLeft')
+    document.getElementById("rightArrow").classList.remove("clickedArrow");
+    document.getElementById("leftArrow").classList.add("clickedArrow");
     print(currentGolfCourse, currentTeeType);
   }
 });
@@ -208,7 +212,7 @@ function checkIfHolesAreCompleted() {
     }
   }
 
-  if (completedAllHoles) {
+  if (completedAllHoles && pageNum === 2 ) {
     listOfPlayers.forEach((player) => {
       totalsArray += player.playerTotal;
     })
@@ -222,11 +226,6 @@ function checkIfHolesAreCompleted() {
     playerSuccess(bestPlayer, bestScore);
   }
 }
-//makesure that each player has all 18 holes with no spaces.
-// get each total holes and list them from smallest to biggest.
-//shift of first and let that equal best player. run through playerSuccess.
-
-
 function playerSuccess(bestPlayer, bestScore){
    toastr.success(`${bestPlayer}, YOU ARE THE WINNER WITH A SCORE OF ${bestScore}!`);
   resetButton();
