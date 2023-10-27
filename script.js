@@ -32,7 +32,6 @@ async function defaultTeeType() {
   // Return the defaultTeeType
   print(currentGolfCourse, currentTeeType);
   return currentTeeType;
-  
 }
 
 async function getCourses() {
@@ -137,7 +136,7 @@ class Player {
     scores = Array(18).fill(0);
     // Array(18).fill(0)[9,2,2,2,2,2,2,2,2,18,2,2,2,2,2,2,2,2]
     this.name = name;
-     this.id = id;
+    this.id = id;
     this.scores = scores;
   }
   printingPlayer() {
@@ -173,14 +172,14 @@ function inputEnter(event) {
     }
   }
 }
-function playerSuccess(){
+function playerSuccess() {
   let bestPlayer = 18;
   //get a list of all total scores of players. print them out with a toast.
   // const bestPlayer = Math.min(listOfPlayers);
-   toastr.success(`${bestPlayer}, YOU ARE THE WINNER!`);
+  toastr.success(`${bestPlayer}, YOU ARE THE WINNER!`);
   // console.log(bestPlayer)
   resetButton();
-  }
+}
 /// print function
 
 function print(currentGolfCourse, currentTeeType) {
@@ -273,35 +272,35 @@ function print(currentGolfCourse, currentTeeType) {
     if (pageNum === 1) {
       let count = 1;
       let outScore = 0;
-      let newPlayerScore = player.scores.slice(0,-9);
-      newPlayerScore.forEach(score => {
+      let newPlayerScore = player.scores.slice(0, -9);
+      newPlayerScore.forEach((score) => {
         outScore += score;
-        if(score === 0) {
-          golfChart += `<td><input type="Number" class="scoreIn" id="${player.id}-${count}"></td>`
+        if (score === 0) {
+          golfChart += `<td><input type="Number" class="scoreIn" id="${player.id}-${count}"></td>`;
         }
-        if(score !== 0) {
-          golfChart += `<td>${score}</td>`
+        if (score !== 0) {
+          golfChart += `<td>${score}</td>`;
         }
         count += 1;
-      })
+      });
       golfChart += `<td>${outScore}</td></tr>`;
     }
     if (pageNum === 2) {
       let count = 10;
       let totalScore = 0;
-      player.scores.forEach(elem => {
-        totalScore += elem
-      })
+      player.scores.forEach((elem) => {
+        totalScore += elem;
+      });
       let newPlayerScore = player.scores.slice(9);
-      newPlayerScore.forEach(score => {
-        if(score === 0) {
-          golfChart += `<td><input type="Number" class="scoreIn" id="${player.id}-${count}"></td>`
+      newPlayerScore.forEach((score) => {
+        if (score === 0) {
+          golfChart += `<td><input type="Number" class="scoreIn" id="${player.id}-${count}"></td>`;
         }
-        if(score !== 0) {
-          golfChart += `<td>${score}</td>`
+        if (score !== 0) {
+          golfChart += `<td>${score}</td>`;
         }
         count += 1;
-      })
+      });
       golfChart += `<td>${totalScore}</td></tr>`;
     }
   });
@@ -319,27 +318,35 @@ function print(currentGolfCourse, currentTeeType) {
 /// input scores
 
 function scoreInput() {
-  listOfPlayers.forEach(player => {
+  listOfPlayers.forEach((player) => {
     let playerIn = document.querySelectorAll(`[id^="${player.id}"]`);
-    playerIn.forEach(elem => {
-      elem.addEventListener('keypress', function(e) {
-        if(e.key === 'Enter') {
-          let input = Number(elem.value)
-          console.log(elem.id.length)
+    playerIn.forEach((elem) => {
+      elem.addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+          let input = Number(elem.value);
           let inputNum;
-          if(elem.id.length === 3) {
-            inputNum = Number(elem.id.slice(-1)) -1
+          if (elem.id.length === 3) {
+            inputNum = Number(elem.id.slice(-1)) - 1;
           } else {
-            inputNum = Number(elem.id.slice(-2)) -1
+            inputNum = Number(elem.id.slice(-2)) - 1;
           }
-          player.scores.splice(inputNum, 1, input)
-          // elem.replaceWith(input)
-          console.log(player.scores)
+          player.scores.splice(inputNum, 1, input);
           print(currentGolfCourse, currentTeeType);
+          nextInLine();
         }
-      })
-    })
-  })
+      });
+    });
+  });
+}
+
+function nextInLine() {
+  listOfPlayers.forEach((player) => {
+    let playerIn = document.querySelectorAll(`[id^="${player.id}"]`);
+    for (let i = 0; i < listOfPlayers.length; i++) {
+      playerIn[0].focus();
+      console.log(i);
+    }
+  });
 }
 
 // run funciton on change or window load. put this into a window load function if we do local storage
@@ -365,18 +372,19 @@ document.getElementById("selectedTeeBox").addEventListener("change", () => {
 function clear() {
   document.getElementById("newPlayerInput").value = "";
 }
-function resetButton(){
- const htmlResetButton= '<div class="btn btn-danger w-25 h-100 fw-bold" onClick="reset()">Reset</div>'
-  document.getElementById('resetButtonHtml').innerHTML = htmlResetButton;
+function resetButton() {
+  const htmlResetButton =
+    '<div class="btn btn-danger w-25 h-100 fw-bold" onClick="reset()">Reset</div>';
+  document.getElementById("resetButtonHtml").innerHTML = htmlResetButton;
 }
-function reset(){
-  console.log('reset')
+function reset() {
+  console.log("reset");
   window.location.reload();
-// currentTeeType;
-//  currentGolfCourse;
-//  pageNum = 1;
-//  listOfPlayers = [];
-//  document.getElementById('resetButtonHtml').innerHTML = '';
+  // currentTeeType;
+  //  currentGolfCourse;
+  //  pageNum = 1;
+  //  listOfPlayers = [];
+  //  document.getElementById('resetButtonHtml').innerHTML = '';
 }
 // make a print function that will add up the scores and display the sum. there are 18 holes so an index of 0-17.
 
