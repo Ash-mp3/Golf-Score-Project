@@ -100,15 +100,48 @@ td {
     cursor: pointer;
 }
 
-.clikcedArrow {
+.clickedArrow {
     color: gray;
 }
-
-
+.animate__animated.animate__slideInRight.animate__slideInLeft {
+    --animate-duration: 5s;
+}
+/*drop down menu*/
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 120px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  .dropdown-content a {
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+  }
+  
+  .editable-name {
+    cursor: pointer;
+  }
+  
+  .editable-name:hover + .dropdown-content, .dropdown-content:hover {
+    display: block;
+  }
+  /*text align in the center*/
+  td {
+    text-align: center;
+  }
+  td span {
+    text-align: center;
+  }
 /*font size fix at small
 center on page
-link up success with total
 work on player multiple names and max letters
 put bar seperating players and cards
-fix reset button
-work on local storage*/
+work on local storage
+animate slides
+animate completion
+*/
