@@ -33,7 +33,6 @@ async function defaultTeeType() {
   // Return the defaultTeeType
   print(currentGolfCourse, currentTeeType);
   return currentTeeType;
-  
 }
 
 async function getCourses() {
@@ -113,12 +112,12 @@ async function fetchData() {
 }
 
 /// switch page function
-const tableCon = document.getElementById('tableCon')
+const tableCon = document.getElementById("tableCon");
 document.getElementById("rightArrow").addEventListener("click", () => {
   if (pageNum === 1) {
     pageNum = 2;
-    tableCon.classList.add('animate__slideInRight')
-    tableCon.classList.remove('animate__slideInLeft')
+    tableCon.classList.add("animate__slideInRight");
+    tableCon.classList.remove("animate__slideInLeft");
     document.getElementById("leftArrow").classList.remove("clickedArrow");
     document.getElementById("rightArrow").classList.add("clickedArrow");
     print(currentGolfCourse, currentTeeType);
@@ -127,8 +126,8 @@ document.getElementById("rightArrow").addEventListener("click", () => {
 document.getElementById("leftArrow").addEventListener("click", () => {
   if (pageNum === 2) {
     pageNum = 1;
-    tableCon.classList.remove('animate__slideInRight')
-    tableCon.classList.add('animate__slideInLeft')
+    tableCon.classList.remove("animate__slideInRight");
+    tableCon.classList.add("animate__slideInLeft");
     document.getElementById("rightArrow").classList.remove("clickedArrow");
     document.getElementById("leftArrow").classList.add("clickedArrow");
     print(currentGolfCourse, currentTeeType);
@@ -141,7 +140,7 @@ class Player {
   constructor(name, id = listOfPlayers.length + 1, scores, playerTotal) {
     scores = Array(18).fill(0);
     this.name = name;
-     this.id = id;
+    this.id = id;
     this.scores = scores;
     playerTotal = 0;
   }
@@ -160,24 +159,24 @@ function newPlayer() {
   // alert('cant have same name')
   // }
   if (listOfPlayers.length > 3) {
-    toastr["error"]("Maximum Players", "Max")
-toastr.options = {
-  "closeButton": false,
-  "debug": false,
-  "newestOnTop": false,
-  "progressBar": true,
-  "positionClass": "toast-top-center",
-  "preventDuplicates": false,
-  "onclick": null,
-  "showDuration": "300",
-  "hideDuration": "1000",
-  "timeOut": "5000",
-  "extendedTimeOut": "1000",
-  "showEasing": "swing",
-  "hideEasing": "linear",
-  "showMethod": "fadeIn",
-  "hideMethod": "fadeOut"
-}
+    toastr["error"]("Maximum Players", "Max");
+    toastr.options = {
+      closeButton: false,
+      debug: false,
+      newestOnTop: false,
+      progressBar: true,
+      positionClass: "toast-top-center",
+      preventDuplicates: false,
+      onclick: null,
+      showDuration: "300",
+      hideDuration: "1000",
+      timeOut: "5000",
+      extendedTimeOut: "1000",
+      showEasing: "swing",
+      hideEasing: "linear",
+      showMethod: "fadeIn",
+      hideMethod: "fadeOut",
+    };
   } else {
     const newPlayer = new Player(`${name}`, listOfPlayers.length + 1);
     listOfPlayers.push(newPlayer);
@@ -193,15 +192,15 @@ function inputEnter(event) {
   }
 }
 function checkIfHolesAreCompleted() {
-  const playerRows = document.querySelectorAll('.playerDomRow');
+  const playerRows = document.querySelectorAll(".playerDomRow");
   let completedAllHoles = true; // Initialize as true
 
   for (let i = 0; i < playerRows.length; i++) {
-    const cells = playerRows[i].querySelectorAll('td'); // Assuming you want to check td elements
+    const cells = playerRows[i].querySelectorAll("td"); // Assuming you want to check td elements
 
     for (let j = 0; j < cells.length; j++) {
       const cell = cells[j];
-      if (cell.textContent.trim() === '') {
+      if (cell.textContent.trim() === "") {
         completedAllHoles = false; // If any cell is empty, set it to false
         break; // No need to check the rest, we already found an empty cell
       }
@@ -212,24 +211,26 @@ function checkIfHolesAreCompleted() {
     }
   }
 
-  if (completedAllHoles && pageNum === 2 ) {
+  if (completedAllHoles && pageNum === 2) {
     listOfPlayers.forEach((player) => {
       totalsArray += player.playerTotal;
-    })
+    });
     const bestScore = Math.min(totalsArray);
-    let bestPlayer = '';
+    let bestPlayer = "";
     listOfPlayers.forEach((player) => {
-      if(player.playerTotal === bestScore){
-         bestPlayer = capitalizeFirstName(player.name);
+      if (player.playerTotal === bestScore) {
+        bestPlayer = capitalizeFirstName(player.name);
       }
-    })
+    });
     playerSuccess(bestPlayer, bestScore);
   }
 }
-function playerSuccess(bestPlayer, bestScore){
-   toastr.success(`${bestPlayer}, YOU ARE THE WINNER WITH A SCORE OF ${bestScore}!`);
+function playerSuccess(bestPlayer, bestScore) {
+  toastr.success(
+    `${bestPlayer}, YOU ARE THE WINNER WITH A SCORE OF ${bestScore}!`
+  );
   resetButton();
-  }
+}
 /// print function
 
 function print(currentGolfCourse, currentTeeType) {
@@ -320,45 +321,51 @@ function print(currentGolfCourse, currentTeeType) {
   listOfPlayers.forEach((player) => {
     golfChart += `<tr class="col-10 playerDomRow">
       <td class="editable-cell">
-        <span id="name-${player.id}" class="editable-name" onclick="showDropdown(this)">${capitalizeFirstName(player.name)}</span>
+        <span id="name-${
+          player.id
+        }" class="editable-name" onclick="showDropdown(this)">${capitalizeFirstName(
+      player.name
+    )}</span>
         <div class="dropdown-content">
-          <a href="javascript:void(0)" id="edit-${player.id}" onclick="editPlayerName(this.id)">Edit</a>
+          <a href="javascript:void(0)" id="edit-${
+            player.id
+          }" onclick="editPlayerName(this.id)">Edit</a>
           <a href="javascript:void(0)" onclick="removeName(this)">Remove</a>
         </div>
       </td>`;
     if (pageNum === 1) {
       let count = 1;
       let outScore = 0;
-      let newPlayerScore = player.scores.slice(0,-9);
-      newPlayerScore.forEach(score => {
+      let newPlayerScore = player.scores.slice(0, -9);
+      newPlayerScore.forEach((score) => {
         outScore += score;
-        if(score === 0) {
-          golfChart += `<td><input type="text" class="scoreIn" id="${player.id}-${count}"></td>`
+        if (score === 0) {
+          golfChart += `<td><input type="text" class="scoreIn" id="${player.id}-${count}"></td>`;
         }
-        if(score !== 0) {
-          golfChart += `<td>${score}</td>`
+        if (score !== 0) {
+          golfChart += `<td>${score}</td>`;
         }
         count += 1;
-      })
+      });
       golfChart += `<td>${outScore}</td></tr>`;
     }
     if (pageNum === 2) {
       let count = 10;
       let totalScore = 0;
-      player.scores.forEach(elem => {
-        totalScore += elem
+      player.scores.forEach((elem) => {
+        totalScore += elem;
       });
-      player.playerTotal = totalScore
+      player.playerTotal = totalScore;
       let newPlayerScore = player.scores.slice(9);
-      newPlayerScore.forEach(score => {
-        if(score === 0) {
-          golfChart += `<td><input type="text" class="scoreIn" id="${player.id}-${count}"></td>`
+      newPlayerScore.forEach((score) => {
+        if (score === 0) {
+          golfChart += `<td><input type="text" class="scoreIn" id="${player.id}-${count}"></td>`;
         }
-        if(score !== 0) {
-          golfChart += `<td>${score}</td>`
+        if (score !== 0) {
+          golfChart += `<td>${score}</td>`;
         }
         count += 1;
-      })
+      });
       golfChart += `<td>${totalScore}</td></tr>`;
     }
   });
@@ -371,19 +378,19 @@ function print(currentGolfCourse, currentTeeType) {
     `currentGolfCourse: ${currentGolfCourse.city}`
   );
   scoreInput();
-  if(listOfPlayers.length > 0){
-  checkIfHolesAreCompleted()
-}
+  if (listOfPlayers.length > 0) {
+    checkIfHolesAreCompleted();
+  }
 }
 
 /// input scores
 
 function scoreInput() {
-  listOfPlayers.forEach(player => {
+  listOfPlayers.forEach((player) => {
     let playerIn = document.querySelectorAll(`[id^="${player.id}"]`);
-    playerIn.forEach(elem => {
-      elem.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' || e.key === 'Tab') {
+    playerIn.forEach((elem) => {
+      elem.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === "Tab") {
           if (elem.value > 0) {
             let input = Number(elem.value);
             let inputNum;
@@ -398,28 +405,41 @@ function scoreInput() {
           } else {
             toastr["error"]("Not a valid golf score", "Error");
             toastr.options = {
-              "closeButton": false,
-              "debug": false,
-              "newestOnTop": false,
-              "progressBar": true,
-              "positionClass": "toast-top-center",
-              "preventDuplicates": false,
-              "onclick": null,
-              "showDuration": "300",
-              "hideDuration": "1000",
-              "timeOut": "5000",
-              "extendedTimeOut": "1000",
-              "showEasing": "swing",
-              "hideEasing": "linear",
-              "showMethod": "fadeIn",
-              "hideMethod": "fadeOut"
+              closeButton: false,
+              debug: false,
+              newestOnTop: false,
+              progressBar: true,
+              positionClass: "toast-top-center",
+              preventDuplicates: false,
+              onclick: null,
+              showDuration: "300",
+              hideDuration: "1000",
+              timeOut: "5000",
+              extendedTimeOut: "1000",
+              showEasing: "swing",
+              hideEasing: "linear",
+              showMethod: "fadeIn",
+              hideMethod: "fadeOut",
             };
             // Clear input if incorrect
-            elem.value = '';
+            elem.value = "";
           }
+          player.scores.splice(inputNum, 1, input);
+          print(currentGolfCourse, currentTeeType);
+          nextInLine();
         }
       });
     });
+  });
+}
+
+function nextInLine() {
+  listOfPlayers.forEach((player) => {
+    let playerIn = document.querySelectorAll(`[id^="${player.id}"]`);
+    for (let i = 0; i < listOfPlayers.length; i++) {
+      playerIn[0].focus();
+      console.log(i);
+    }
   });
 }
 // run funciton on change or window load. put this into a window load function if we do local storage
@@ -446,18 +466,19 @@ document.getElementById("selectedTeeBox").addEventListener("change", () => {
 function clear() {
   document.getElementById("newPlayerInput").value = "";
 }
-function resetButton(){
- const htmlResetButton= '<div class="btn btn-danger w-25 h-100 fw-bold" onClick="reset()">Reset</div>'
-  document.getElementById('resetButtonHtml').innerHTML = htmlResetButton;
+function resetButton() {
+  const htmlResetButton =
+    '<div class="btn btn-danger w-25 h-100 fw-bold" onClick="reset()">Reset</div>';
+  document.getElementById("resetButtonHtml").innerHTML = htmlResetButton;
 }
-function reset(){
+function reset() {
   window.location.reload();
-  
-// currentTeeType;
-//  currentGolfCourse;
-//  pageNum = 1;
-//  listOfPlayers = [];
-//  document.getElementById('resetButtonHtml').innerHTML = '';
+
+  // currentTeeType;
+  //  currentGolfCourse;
+  //  pageNum = 1;
+  //  listOfPlayers = [];
+  //  document.getElementById('resetButtonHtml').innerHTML = '';
 }
 
 //drop down name editing
@@ -467,32 +488,31 @@ function showDropdown(span) {
 }
 
 function editPlayerName(editId) {
-  const playerId = editId.replace(/[^0-9]/g, '');
+  const playerId = editId.replace(/[^0-9]/g, "");
   listOfPlayers.forEach((player) => {
-   if(player.id == playerId){
-    const newName = prompt(`Enter a new name for ${player.name}:`);
-   if (newName !== null) {
-     player.name = capitalizeFirstName(newName);
-     const playerElement = document.getElementById(`name-${player.id}`);
-     if (playerElement) {
-       playerElement.textContent = newName;
-     }
-   }
-   }
-  }) 
-};
+    if (player.id == playerId) {
+      const newName = prompt(`Enter a new name for ${player.name}:`);
+      if (newName !== null) {
+        player.name = capitalizeFirstName(newName);
+        const playerElement = document.getElementById(`name-${player.id}`);
+        if (playerElement) {
+          playerElement.textContent = newName;
+        }
+      }
+    }
+  });
+}
 function removeName(link) {
   const confirmation = confirm("Are you sure you want to remove this name?");
   if (confirmation) {
     const span = link.parentNode.parentNode.firstChild.nextElementSibling;
     const spanId = span.id;
-    const playerId = spanId.replace(/[^0-9]/g, '');
-    const playerNumIndex  = (parseInt(playerId)-1);
+    const playerId = spanId.replace(/[^0-9]/g, "");
+    const playerNumIndex = parseInt(playerId) - 1;
     listOfPlayers.splice(playerNumIndex, 1);
     const cell = link.parentNode.parentNode.parentNode;
     cell.parentNode.removeChild(cell);
   }
-   
 }
 //just for fun capatilizing first names
 function capitalizeFirstName(name) {
